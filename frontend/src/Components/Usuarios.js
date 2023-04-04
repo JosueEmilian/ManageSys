@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -19,6 +20,7 @@ function Usuarios() {
           </li>
         ))}
       </ul>
+      <Button variant="danger">Primary</Button>
     </div>
   );
 }
