@@ -7,10 +7,9 @@ function Home() {
   const email = useSelector((state) => state.email);
 
   const handleLogout = () => {
-    console.log("Despachando logout...");
-    dispatch(logout());
-    console.log("Despachando resetUser...");
-    dispatch(resetUser());
+    localStorage.removeItem("user"); // borra el usuario del almacenamiento local
+    dispatch(logout()); // llama a la acción de logout
+    dispatch(resetUser()); // llama a la acción de resetUser
   };
 
   return (

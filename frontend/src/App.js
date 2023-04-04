@@ -21,6 +21,7 @@ function App() {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(resetUser());
+    dispatch({ type: "CLEAR_EMAIL" });
   };
 
   return (

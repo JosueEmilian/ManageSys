@@ -9,6 +9,7 @@ export const login = (email) => {
 export const logout = () => {
   return {
     type: "LOGOUT",
+    payload: null,
   };
 };
 

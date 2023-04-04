@@ -3,9 +3,10 @@ const userReducer = (state = {}, action) => {
     case "LOGIN":
       return { ...state, ...action.payload };
     case "LOGOUT":
-      return {};
     case "RESET_USER":
       return {};
+    case "CLEAR_EMAIL":
+      return { ...state, email: null };
     default:
       return state;
   }
