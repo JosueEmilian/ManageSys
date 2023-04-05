@@ -5,15 +5,19 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Usuarios from "./Components/Usuarios";
 import { login, logout, resetUser } from "./Service/userAction";
+import Dashboard from "./pages/Dashboard";
+import ScrollTopTop from "./Components/ScrollTopTop";
+import Navigation from "./Components/Navigation";
 
 function App() {
   const dispatch = useDispatch();
   const email = useSelector((state) => state.email);
+  const isAdmin = useSelector((state) => state.isAdmin);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.email) {
-      dispatch(login(user.email));
+      dispatch(login(user.email, user.isAdmin));
     }
   }, [dispatch]);
 
@@ -21,45 +25,39 @@ function App() {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(resetUser());
-    dispatch({ type: "CLEAR_EMAIL" });
   };
 
   return (
     <BrowserRouter>
+      <ScrollTopTop />
       <Navigation handleLogout={handleLogout} />
       <Routes>
         <Route index element={<Usuarios />} />
         <Route path="/usuarios" element={<Usuarios />} />
 
-        <Route
-          path="/login"
-          element={!email ? <Login /> : <Navigate to="/home" />}
-        />
-        <Route
-          path="/home"
-          element={email ? <Home /> : <Navigate to="/login" />}
-        />
+        {/* Si el usuario no está logueado, lo redirige a la página de login */}
+        {!email && (
+          <>
+            <Route path="/login" element={<Login />} />
+          </>
+        )}
+
+        {/* Si el usuario está logueado, lo redirige a la página de home */}
+        {email && (
+          <>
+            <Route path="/home" element={<Home />} />
+          </>
+        )}
+
+        {/* Si el usuario es Admin, lo redirige a la pagina de dashboard */}
+        {isAdmin && (
+          <>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </>
+        )}
+        <Route path="*" element={<Usuarios />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
-function Navigation() {
-  return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/home">Home</Link>
-        </li>
-        <li>
-          <Link to="/usuarios">Usuarios</Link>
-        </li>
-      </ul>
-    </nav>
-  );
-}
-
 export default App;

@@ -2,6 +2,7 @@ package dao;
 
 import config.ConnectionDB;
 import java.sql.*;
+import javax.xml.ws.Holder;
 import model.User;
 
 public class DaoUser {
@@ -18,29 +19,35 @@ public class DaoUser {
         connDB.close();
     }
 
-    public boolean validarCredenciales(String usuario, String contrasenia) {
-        boolean resultado = false;
-        try {
-            // Crear una consulta preparada para buscar las credenciales ingresadas
-            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM Users WHERE email=? AND password=?");
-            ps.setString(1, usuario);
-            ps.setString(2, contrasenia);
+    //metodo para validar credenciales
+public boolean validarCredenciales(String usuario, String contrasenia, Holder<User> userHolder) {
+    boolean resultado = false;
+    User user = null;
+    try {
+        // Crear una consulta preparada para buscar las credenciales ingresadas
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM Users WHERE email=? AND password=?");
+        ps.setString(1, usuario);
+        ps.setString(2, contrasenia);
 
-            // Ejecutar la consulta y obtener el resultado
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            int count = rs.getInt(1);
-
-            // Verificar si las credenciales son válidas
-            resultado = (count == 1);
-
-            // Cerrar la conexión y liberar los recursos
-            rs.close();
-            ps.close();
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        // Ejecutar la consulta y obtener el resultado
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            user = new User();
+            user.setId(rs.getInt("idUsuario"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
+            user.setIsAdmin(rs.getBoolean("isAdmin"));
+            resultado = true;
         }
-        return resultado;
+
+        // Cerrar la conexión y liberar los recursos
+        rs.close();
+        ps.close();
+        conn.close();
+    } catch (SQLException ex) {
+        ex.printStackTrace();
     }
+    userHolder.value = user;
+    return resultado;
+}
 }
