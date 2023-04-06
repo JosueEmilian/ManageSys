@@ -1,6 +1,7 @@
 package service;
 
 import dao.DaoUser;
+import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -19,7 +20,7 @@ public class WSLogin {
 @WebMethod(operationName = "validarCredenciales")
 public boolean validarCredenciales(@WebParam(name = "email") String email,
         @WebParam(name = "password") String password, 
-        @WebParam(name = "user") Holder<User> user) {
+        @WebParam(name = "user") Holder<List<User>> user) {
     boolean resultado = false;
     try {
         loginDao = new DaoUser();
@@ -30,4 +31,5 @@ public boolean validarCredenciales(@WebParam(name = "email") String email,
     }
     return resultado;
 }
+
 }

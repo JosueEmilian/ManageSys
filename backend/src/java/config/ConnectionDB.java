@@ -19,7 +19,7 @@ public class ConnectionDB {
     private ResultSet rs = null;
 
     //Connection String
-    String url = "jdbc:sqlserver://localhost:1433;" + "databaseName=implementTest;";
+    String url = "jdbc:sqlserver://localhost:1433;" + "databaseName=DB_PROGRAIII;";
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     public Connection open() throws ClassNotFoundException {

@@ -6,7 +6,6 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { resetUser, logout } from "../Service/userAction";
-import "./Navigation.css";
 
 function Navigation() {
   const dispatch = useDispatch();
@@ -17,7 +16,6 @@ function Navigation() {
     localStorage.removeItem("user"); // borra el usuario del almacenamiento local
     dispatch(logout()); // llama a la acción de logout
     dispatch(resetUser()); // llama a la acción de resetUser
-    console.log("isAdmin: ", isAdmin);
   };
 
   return (
@@ -65,13 +63,11 @@ function Navigation() {
                 )}
 
                 <NavDropdown.Divider />
-                <Button
-                  variant="warning"
-                  onClick={handleLogout}
-                  className="logout-btn"
-                >
-                  Cerrar Sesion
-                </Button>
+                <div className="text-center">
+                  <Button variant="warning" onClick={handleLogout}>
+                    Cerrar Sesion
+                  </Button>
+                </div>
               </NavDropdown>
             )}
           </Nav>

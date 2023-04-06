@@ -1,29 +1,25 @@
-import React from "react";
+// import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUser, logout } from "../Service/userAction";
 
 function Home() {
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.email);
-  const isAdmin = useSelector((state) => state.isAdmin);
+  const user = useSelector((state) => state.user);
 
   const handleLogout = () => {
     localStorage.removeItem("user"); // borra el usuario del almacenamiento local
     dispatch(logout()); // llama a la acción de logout
     dispatch(resetUser()); // llama a la acción de resetUser
-    console.log("isAdmin: ", isAdmin);
   };
 
   return (
     <div>
       <h1>Home</h1>
-      <p>Holaaa {email}</p>
-      {isAdmin ? "Admin" : "Not admin"}
-      {isAdmin ? (
-        <p>El usuario es un administrador</p>
-      ) : (
-        <p>El usuario no es un administrador</p>
-      )}
+      {/* verifica primero si no es nulo */}
+      {user && <p>Holaaa {user.usuario}</p>}
+      {user && <p>tu rol es {user.rol}</p>}
+      {user && <p>modulo es {user.modulo}</p>}
+      {user && <p>tu path es {user.ruta}</p>}
 
       <button onClick={handleLogout}>Cerrar sesión</button>
     </div>

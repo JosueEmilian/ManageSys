@@ -1,32 +1,7 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./Login.css";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { login } from "../Service/userAction";
-import { loginUsr } from "../ServiceSoap/LoginSoap";
+import React from "react";
+import "./RegistroUsuarios.css";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    loginUsr(
-      email,
-      password,
-      (users) => {
-        dispatch(login(users[0])); // Guardar datos del usuario en el estado de Redux
-        navigate(users[0].ruta);
-      },
-      (errorMessage) => {
-        console.log("Error al iniciar sesión:", errorMessage);
-      }
-    );
-  }
-
+function RegistroUsuarios() {
   return (
     <div className="App">
       <div className=" align-items-center py-4 bg-gray-100 vh-100">
@@ -36,42 +11,30 @@ function Login() {
             <div className="show col-lg-6 px-lg-4">
               <div className="card">
                 <div className="card-header px-lg-5">
-                  <div className="card-heading text-black text-center">
+                  <div className="card-heading text-primary">
                     ManageSys Login
                   </div>
                 </div>
                 <div className="card-body p-lg-5">
-                  <h3 className="mb-4">Hola, Bienvenido! 👋 </h3>
+                  <h3 className="mb-4">Registor de Usuarios! 👋 </h3>
                   <p className="text-muted text-sm mb-5">
                     El proyecto consiste en la elaboración de un sistema en
                     lenguaje de programación java con una arquitectura web
                     utilizando el patrón de diseño MVC, debe manejar la parte de
                     la configuración y seguridad del sistema.
                   </p>
-                  <form
-                    id="loginForm"
-                    action="index.html"
-                    onSubmit={handleSubmit}
-                  >
+                  <form id="loginForm" action="index.html">
                     <div className="form-floating mb-3">
-                      <input
-                        className="form-control"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
+                      <input className="form-control" type="email" required />
                       <label for="floatingInput">Email</label>
                     </div>
                     <div className="form-floating mb-3">
                       <input
                         className="form-control"
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
                         required
                       />
-                      <label>Password</label>
+                      <label for="floatingPassword">Password</label>
                     </div>
                     <div className="form-check mb-3">
                       <input className="form-check-input" type="checkbox" />
@@ -98,4 +61,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default RegistroUsuarios;

@@ -1,16 +1,19 @@
+const storedUser = JSON.parse(localStorage.getItem("user")); // Obtener usuario del almacenamiento local si existe
+
 const initialState = {
-  isAdmin: false,
+  user: storedUser ? storedUser : null, // Establecer el estado inicial del usuario desde el almacenamiento local
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOGIN":
-      return { ...state, ...action.payload };
+      return { ...state, user: action.payload };
+
     case "LOGOUT":
     case "RESET_USER":
-      return initialState;
-    case "SET_IS_ADMIN":
-      return { ...state, isAdmin: action.payload };
+      localStorage.removeItem("user"); // Eliminar usuario del almacenamiento local al cerrar sesión o reiniciar el usuario
+      return { ...state, user: null };
+
     default:
       return state;
   }

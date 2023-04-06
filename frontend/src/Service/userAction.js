@@ -1,8 +1,8 @@
-export const login = (email, isAdmin) => {
-  localStorage.setItem("user", JSON.stringify({ email, isAdmin }));
+export const login = (user) => {
+  localStorage.setItem("user", JSON.stringify(user)); // Guardar usuario en el almacenamiento local
   return {
     type: "LOGIN",
-    payload: { email, isAdmin },
+    payload: user, // Pasar el usuario directamente como carga útil
   };
 };
 
@@ -16,12 +16,5 @@ export const logout = () => {
 export const resetUser = () => {
   return {
     type: "RESET_USER",
-  };
-};
-
-export const setIsAdmin = (isAdmin) => {
-  return {
-    type: "SET_IS_ADMIN",
-    payload: isAdmin,
   };
 };

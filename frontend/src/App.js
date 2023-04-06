@@ -1,23 +1,24 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Usuarios from "./Components/Usuarios";
-import { login, logout, resetUser } from "./Service/userAction";
-import Dashboard from "./pages/Dashboard";
-import ScrollTopTop from "./Components/ScrollTopTop";
+import HomePublic from "./pages/HomePublic";
 import Navigation from "./Components/Navigation";
+import Dashboard from "./pages/Dashboard";
+import RegistroUsuarios from "./pages/RegistroUsuarios";
+import { login, logout, resetUser } from "./Service/userAction";
+import ScrollTopTop from "./Components/ScrollTopTop";
 
 function App() {
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.email);
-  const isAdmin = useSelector((state) => state.isAdmin);
+  const user = useSelector((state) => state.user);
+  const isLoggedIn = !!user;
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.email) {
-      dispatch(login(user.email, user.isAdmin));
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      dispatch(login(storedUser));
     }
   }, [dispatch]);
 
@@ -27,37 +28,41 @@ function App() {
     dispatch(resetUser());
   };
 
+  const rutas = {
+    "/dashboard": Dashboard,
+    "/home": Home,
+  };
+
+  const path = user?.ruta;
+  const Ruta = rutas[path];
+  // console.log("path", path);
+  // console.log("Ruta", Ruta);
+
   return (
     <BrowserRouter>
       <ScrollTopTop />
-      <Navigation handleLogout={handleLogout} />
+      <Navigation isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <Routes>
-        <Route index element={<Usuarios />} />
-        <Route path="/usuarios" element={<Usuarios />} />
+        <Route index element={<HomePublic />} />
 
         {/* Si el usuario no está logueado, lo redirige a la página de login */}
-        {!email && (
+        {!isLoggedIn && (
           <>
             <Route path="/login" element={<Login />} />
           </>
         )}
 
         {/* Si el usuario está logueado, lo redirige a la página de home */}
-        {email && (
+        {isLoggedIn && (
           <>
-            <Route path="/home" element={<Home />} />
+            <Route path={path} element={<Ruta />} />
           </>
         )}
-
-        {/* Si el usuario es Admin, lo redirige a la pagina de dashboard */}
-        {isAdmin && (
-          <>
-            <Route path="/dashboard" element={<Dashboard />} />
-          </>
-        )}
-        <Route path="*" element={<Usuarios />} />
+        <Route path="register" element={<RegistroUsuarios />} />
+        <Route path="*" element={<HomePublic />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
 export default App;
