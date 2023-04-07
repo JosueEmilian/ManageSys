@@ -6,11 +6,13 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { resetUser, logout } from "../Service/userAction";
+import "./Navigation.css";
 
 function Navigation() {
   const dispatch = useDispatch();
   const email = useSelector((state) => state.email);
   const isAdmin = useSelector((state) => state.isAdmin);
+  const user = useSelector((state) => state.user);
 
   const handleLogout = () => {
     localStorage.removeItem("user"); // borra el usuario del almacenamiento local
@@ -28,42 +30,38 @@ function Navigation() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             {/* Si no existe usuario */}
-            {!email && (
+            {!user?.usuario && (
               <LinkContainer to="/login">
                 <Nav.Link>Iniciar Sesion</Nav.Link>
               </LinkContainer>
             )}
 
             {/* Si existe usuario */}
-            {email && (
-              <NavDropdown title={`${email}`} id="basic-nav-dropdown">
+            {user?.usuario && (
+              <NavDropdown title={`${user.usuario}`} id="basic-nav-dropdown">
                 {/* Si el usuario es admin */}
-                {isAdmin && (
+                {user?.rol === "Administrador" && (
                   <>
                     <LinkContainer to="/dashboard">
                       <NavDropdown.Item>Dashboard</NavDropdown.Item>
                     </LinkContainer>
 
-                    <LinkContainer to="/config">
-                      <NavDropdown.Item>Configuraciones</NavDropdown.Item>
+                    <LinkContainer to="/dashboard/user">
+                      <NavDropdown.Item>Usuarios</NavDropdown.Item>
                     </LinkContainer>
                   </>
                 )}
 
-                {!isAdmin && (
+                {user?.rol !== "Administrador" && (
                   <>
                     <LinkContainer to="/home">
                       <NavDropdown.Item>Perfil</NavDropdown.Item>
-                    </LinkContainer>
-
-                    <LinkContainer to="/ordenes">
-                      <NavDropdown.Item>Ordenes</NavDropdown.Item>
                     </LinkContainer>
                   </>
                 )}
 
                 <NavDropdown.Divider />
-                <div className="text-center">
+                <div className="text-center logout-btn">
                   <Button variant="warning" onClick={handleLogout}>
                     Cerrar Sesion
                   </Button>

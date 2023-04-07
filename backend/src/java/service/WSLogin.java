@@ -1,11 +1,11 @@
 package service;
 
-import dao.DaoUser;
+import dao.DaoLogin;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import model.User;
+import model.ModelUser;
 import javax.xml.ws.Holder;
 
 /**
@@ -15,15 +15,15 @@ import javax.xml.ws.Holder;
 @WebService(serviceName = "WSLogin")
 public class WSLogin {
     
-    private DaoUser loginDao;
+    private DaoLogin loginDao;
 
 @WebMethod(operationName = "validarCredenciales")
 public boolean validarCredenciales(@WebParam(name = "email") String email,
         @WebParam(name = "password") String password, 
-        @WebParam(name = "user") Holder<List<User>> user) {
+        @WebParam(name = "user") Holder<List<ModelUser>> user) {
     boolean resultado = false;
     try {
-        loginDao = new DaoUser();
+        loginDao = new DaoLogin();
         resultado = loginDao.validarCredenciales(email, password, user);
         loginDao.close();
     } catch (Exception ex) {

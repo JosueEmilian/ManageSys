@@ -4,6 +4,9 @@
     <service name="WSLogin">
       <implementation-class>service.WSLogin</implementation-class>
     </service>
+    <service name="WSCrudUser">
+      <implementation-class>service.WSCrudUser</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>
