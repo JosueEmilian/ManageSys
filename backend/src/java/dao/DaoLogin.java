@@ -51,7 +51,7 @@ public boolean validarCredenciales(String usuario, String contrasenia, Holder<Li
             user.setId(rs.getInt("ID_USUARIO"));
             user.setUsuario(rs.getString("USUARIO"));
             user.setEmail(rs.getString("EMAIL"));
-            user.setDescRol(rs.getString("ROL"));
+            user.setRol(rs.getString("ROL"));
             user.setModulo(rs.getString("MODULO"));
             user.setRuta(rs.getString("RUTA"));
             userList.add(user);

@@ -9,9 +9,9 @@ import model.ModelUser;
  */
 public interface CrudUser {
     public List listar();
-    public ModelUser list (int id);
+    public ModelUser list(int id);
     public boolean Register(ModelUser usuario);
     public boolean Update(ModelUser usuario);
     public boolean Delete(ModelUser usuario);
-    public List Search(String usuario);
+    public List<ModelUser> Search(String usuario);
 }

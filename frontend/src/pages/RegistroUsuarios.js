@@ -11,7 +11,7 @@ function RegistroUsuarios() {
             <div className="show col-lg-6 px-lg-4">
               <div className="card">
                 <div className="card-header px-lg-5">
-                  <div className="card-heading text-primary">
+                  <div className="card-heading text-center">
                     ManageSys Login
                   </div>
                 </div>

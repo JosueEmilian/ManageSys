@@ -10,12 +10,12 @@ public class ModelUser {
     private String usuario;
     private String email;
     private String password;
-    private int rol;
-    private boolean estado;
+    private int RegistrarRol;
+    private boolean RegistrarEstado;
     
     //mostrar en table
-    private String DescRol;
-    private String descEstado;
+    private String rol;
+    private String estado;
     
     //relacion con db
     private String modulo;
@@ -26,17 +26,17 @@ public class ModelUser {
     public ModelUser() {
     }
 
-    public ModelUser(int id, String nombre, String apellido, String usuario, String email, String password, int rol, boolean estado, String DescRol, String descEstado, String modulo, String ruta) {
+    public ModelUser(int id, String nombre, String apellido, String usuario, String email, String password, int RegistrarRol, boolean RegistrarEstado, String rol, String estado, String modulo, String ruta) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.usuario = usuario;
         this.email = email;
         this.password = password;
+        this.RegistrarRol = RegistrarRol;
+        this.RegistrarEstado = RegistrarEstado;
         this.rol = rol;
         this.estado = estado;
-        this.DescRol = DescRol;
-        this.descEstado = descEstado;
         this.modulo = modulo;
         this.ruta = ruta;
     }
@@ -89,36 +89,36 @@ public class ModelUser {
         this.password = password;
     }
 
-    public int getRol() {
+    public int getRegistrarRol() {
+        return RegistrarRol;
+    }
+
+    public void setRegistrarRol(int RegistrarRol) {
+        this.RegistrarRol = RegistrarRol;
+    }
+
+    public boolean isRegistrarEstado() {
+        return RegistrarEstado;
+    }
+
+    public void setRegistrarEstado(boolean RegistrarEstado) {
+        this.RegistrarEstado = RegistrarEstado;
+    }
+
+    public String getRol() {
         return rol;
     }
 
-    public void setRol(int rol) {
+    public void setRol(String rol) {
         this.rol = rol;
     }
 
-    public boolean isEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public String getDescRol() {
-        return DescRol;
-    }
-
-    public void setDescRol(String DescRol) {
-        this.DescRol = DescRol;
-    }
-
-    public String getDescEstado() {
-        return descEstado;
-    }
-
-    public void setDescEstado(String descEstado) {
-        this.descEstado = descEstado;
     }
 
     public String getModulo() {
@@ -136,5 +136,8 @@ public class ModelUser {
     public void setRuta(String ruta) {
         this.ruta = ruta;
     }
+
+
+    
   
 }
