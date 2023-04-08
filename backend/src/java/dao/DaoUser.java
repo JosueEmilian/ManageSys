@@ -47,28 +47,14 @@ public class DaoUser implements CrudUser {
                 usr.setEstado(rs.getString("ESTADO"));
                 lstUsers.add(usr);
             }
+            rs.close();
+            conexion.close();
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                if (conexion != null) {
-                    conexion.close();
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
-
         return lstUsers;
     }
 

@@ -22,4 +22,16 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>CORS</web-resource-name>
+      <url-pattern>/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>OPTIONS</http-method>
+    </web-resource-collection>
+    <auth-constraint/>
+  </security-constraint>
 </glassfish-web-app>

@@ -8,7 +8,7 @@ import model.ModelUser;
  * @author josueemilian
  */
 public interface CrudUser {
-    public List listar();
+    public List<ModelUser> listar();
     public ModelUser list(int id);
     public boolean Register(ModelUser usuario);
     public boolean Update(ModelUser usuario);

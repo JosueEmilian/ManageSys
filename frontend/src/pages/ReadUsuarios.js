@@ -15,6 +15,7 @@ function ReadUsuarios() {
   const [showList, setShowList] = useState(true);
   const [originalUsers, setOriginalUsers] = useState([]);
 
+  //UseEffect que carga los usuarios utilizando ReadUserSoap si la variable de estado "users" está vacía.
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -25,9 +26,13 @@ function ReadUsuarios() {
         console.log(error);
       }
     };
-    getUsers();
-  }, []);
+    if (users.length === 0) {
+      // Solo hace la solicitud si no hay users en la variable de estado
+      getUsers();
+    }
+  }, [users]);
 
+  //Filtrar usuarios
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
