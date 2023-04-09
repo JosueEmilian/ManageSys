@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Table, Form, FormControl } from "react-bootstrap";
-import { ReadUserSoap } from "../ServiceSoap/ReadUserSoap.js";
+import { ReadUserSoap } from "../../ServiceSoap/User/ReadUserSoap.js";
 import "./ReadUsuarios.css";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { searchUserSoap } from "../ServiceSoap/SearchUserSoap.js";
+import { searchUserSoap } from "../../ServiceSoap/User/SearchUserSoap.js";
 import { NavLink } from "react-router-dom";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -151,12 +151,16 @@ function ReadUsuarios() {
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
 
-                  <button type="button" className="btn btn-warning">
+                  <NavLink
+                    to={`/dashboard/user/edit?id=${user.id}`}
+                    className="btn btn-warning text-white"
+                  >
                     <FontAwesomeIcon
                       style={{ color: "white" }}
                       icon={faPenToSquare}
                     />
-                  </button>
+                    Editar
+                  </NavLink>
                 </td>
               </tr>
             ))}

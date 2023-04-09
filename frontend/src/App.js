@@ -7,8 +7,9 @@ import HomePublic from "./pages/HomePublic";
 import Navigation from "./Components/Navigation";
 import Dashboard from "./pages/Dashboard";
 import AnalistaDatos from "./pages/AnalistaDatos.js";
-import RegistroUsuarios from "./pages/RegistroUsuarios";
-import ReadUsuarios from "./pages/ReadUsuarios.js";
+import RegistroUsuarios from "./pages/Usuarios/RegistroUsuarios";
+import UpdateUsuarios from "./pages/Usuarios/UpdateUsuarios";
+import ReadUsuarios from "./pages/Usuarios/ReadUsuarios.js";
 import { login, logout, resetUser } from "./Service/userAction";
 import ScrollTopTop from "./Components/ScrollTopTop";
 
@@ -37,9 +38,10 @@ function App() {
     "/analisis-datos": AnalistaDatos,
   };
 
+  //Logica segun su modulo tabla db
   const path = user?.ruta;
   const Ruta = rutas[path];
-  console.log("path: ", path);
+  // console.log("path: ", path);
 
   return (
     <BrowserRouter>
@@ -53,7 +55,7 @@ function App() {
             <Route path="/login" element={<Login />} />
           </>
         )}
-        {/* Si el usuario está logueado, lo redirige a la página de home */}
+        {/* Si el usuario está logueado, lo redirige a la página de home dependiendo su rol */}
         {isLoggedIn && (
           <>
             <Route path={path} element={<Ruta />} />
@@ -67,6 +69,7 @@ function App() {
               path="/dashboard/user/register"
               element={<RegistroUsuarios />}
             />
+            <Route path="/dashboard/user/edit" element={<UpdateUsuarios />} />
           </>
         )}
 

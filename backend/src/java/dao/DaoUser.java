@@ -18,12 +18,13 @@ import model.ModelUser;
  */
 public class DaoUser implements CrudUser {
 
-    ModelUser usuario = new ModelUser();
     String strSQL = "";
+    ModelUser usr = new ModelUser();
     ConnectionDB conexion = new ConnectionDB();
     ResultSet rs = null;
     boolean res = false;
 
+    //LISTAR USUARIOS
     @Override
     public List<ModelUser> listar() {
         ArrayList<ModelUser> lstUsers = new ArrayList<>();
@@ -58,11 +59,42 @@ public class DaoUser implements CrudUser {
         return lstUsers;
     }
 
+    //LISTAR USUARIO POR ID
     @Override
     public ModelUser list(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            strSQL = "SELECT ID_USUARIO, NOMBRE, APELLIDO, USUARIO, EMAIL, ID_ROL, ESTADO \n"
+                    + "FROM USUARIO \n"
+                    + "WHERE ID_USUARIO = ?";
+
+            Connection con = conexion.open();
+            PreparedStatement pst = con.prepareStatement(strSQL);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                usr.setId(rs.getInt("ID_USUARIO"));
+                usr.setNombre(rs.getString("NOMBRE"));
+                usr.setApellido(rs.getString("APELLIDO"));
+                usr.setUsuario(rs.getString("USUARIO"));
+                usr.setEmail(rs.getString("EMAIL"));
+                usr.setRegistrarRol(rs.getInt("ID_ROL"));
+                usr.setRegistrarEstado(rs.getBoolean("ESTADO"));
+            }
+            rs.close();
+            pst.close();
+            conexion.close();
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return usr;
     }
 
+    //REGISTRAR USUARIO
     @Override
     public boolean Register(ModelUser usuario) {
         boolean res = false;
@@ -99,7 +131,48 @@ public class DaoUser implements CrudUser {
 
     @Override
     public boolean Update(ModelUser usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean cambioExitoso = false;
+        Connection con = null;
+        PreparedStatement pst = null;
+
+        try {
+            con = conexion.open();
+
+            // Se prepara la consulta SQL
+            String sql = "UPDATE USUARIO SET NOMBRE = ?, APELLIDO = ?, USUARIO = ?, EMAIL = ?, PASSWORD = ?, ID_ROL = ?, ESTADO = ? WHERE ID_USUARIO = ?";
+            pst = con.prepareStatement(sql);
+            pst.setString(1, usuario.getNombre());
+            pst.setString(2, usuario.getApellido());
+            pst.setString(3, usuario.getUsuario());
+            pst.setString(4, usuario.getEmail());
+            pst.setString(5, usuario.getPassword());
+            pst.setInt(6, usuario.getRegistrarRol());
+            pst.setBoolean(7, usuario.isRegistrarEstado());
+            pst.setInt(8, usuario.getId());
+
+            // Se ejecuta la consulta y se obtiene el resultado
+            int resultado = pst.executeUpdate();
+            if (resultado > 0) {
+                cambioExitoso = true;
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();    
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return cambioExitoso;
     }
 
     @Override

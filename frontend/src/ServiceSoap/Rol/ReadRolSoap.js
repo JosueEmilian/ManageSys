@@ -37,8 +37,8 @@ async function ReadRoleSoap() {
         return {
           id: idNode ? idNode.textContent : "",
           nombre: nombreNode ? nombreNode.textContent : "",
-          apellido: descripcionNode ? descripcionNode.textContent : "",
-          usuario: estadoNode ? estadoNode.textContent : "",
+          descripcion: descripcionNode ? descripcionNode.textContent : "",
+          estado: estadoNode ? estadoNode.textContent : "",
         };
       }
     );

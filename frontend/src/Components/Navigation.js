@@ -10,8 +10,6 @@ import "./Navigation.css";
 
 function Navigation() {
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.email);
-  const isAdmin = useSelector((state) => state.isAdmin);
   const user = useSelector((state) => state.user);
 
   const handleLogout = () => {
