@@ -18,14 +18,14 @@ public class ConnectionDB {
     private Connection con = null;
     private ResultSet rs = null;
 
-    //Connection String
-    String url = "jdbc:sqlserver://localhost:1433;" + "databaseName=DB_PROGRAIII;";
+    //Connection String --> db en virtual machine
+    String url = "jdbc:sqlserver://20.250.6.150:1433;" + "databaseName=DB_PROGRAIII;";
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     public Connection open() throws ClassNotFoundException {
         try {
             Class.forName(driver);
-            con = DriverManager.getConnection(url, "SA", "Administrador_123");
+            con = DriverManager.getConnection(url, "emilianjosue", "123");
         } catch (SQLException e) {
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Excepción: " + e.getMessage());
