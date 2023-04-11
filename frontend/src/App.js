@@ -41,7 +41,7 @@ function App() {
   //Logica segun su modulo tabla db
   const path = user?.ruta;
   const Ruta = rutas[path];
-  // console.log("path: ", path);
+   console.log("path: ", path);
 
   return (
     <BrowserRouter>

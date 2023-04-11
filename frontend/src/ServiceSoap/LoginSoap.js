@@ -1,19 +1,18 @@
 export function buildXml(email, password) {
-  return `<?xml version="1.0" encoding="UTF-8"?>
-    <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-      <SOAP-ENV:Header/>
-      <S:Body>
-        <ns2:validarCredenciales xmlns:ns2="http://service/">
+  return `<?xml version="1.0" encoding="UTF-8"?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <S:Body>
+      <ns2:validarCredenciales xmlns:ns2="http://service/">
           <email>${email}</email>
           <password>${password}</password>
-        </ns2:validarCredenciales>
-      </S:Body>
-    </S:Envelope>`;
+      </ns2:validarCredenciales>
+  </S:Body>
+</S:Envelope>`;
 }
 
 export function loginUsr(email, password, onSuccess, onError) {
   const xml = buildXml(email, password);
-  fetch("http://localhost:8080/backend/WSLogin", {
+  fetch("http://20.250.6.150:8080/backend/WSLogin?WSDL", {
     method: "POST",
     headers: { "Content-Type": "text/xml" },
     body: xml,
