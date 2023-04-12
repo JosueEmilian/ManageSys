@@ -42,6 +42,7 @@ function UpdateUsuarios() {
     apellido: "",
     usuario: "",
     email: "",
+    password: "",
   });
 
   useEffect(() => {
@@ -59,7 +60,6 @@ function UpdateUsuarios() {
   //PARA REGISTRAR EL USUARIO
   const [rol, setRol] = useState("");
   const [estado, setEstado] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,7 +69,7 @@ function UpdateUsuarios() {
         user.apellido,
         user.usuario,
         user.email,
-        password,
+        user.password,
         rol,
         estado,
         id
@@ -83,6 +83,9 @@ function UpdateUsuarios() {
       );
     }
   };
+
+  //Estado booleando para manejar la visibilidad del password
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="App">
@@ -161,12 +164,22 @@ function UpdateUsuarios() {
                     <div className="form-floating mb-3">
                       <input
                         className="form-control"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type={showPassword ? "text" : "password"}
+                        value={user.password}
+                        onChange={(event) =>
+                          setUser({ ...user, password: event.target.value })
+                        }
                         required
                       />
                       <label for="floatingPassword">Password</label>
+
+                      {/* btn para cambiar de estado el input del password */}
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? "Ocultar" : "Mostrar"}
+                      </button>
                     </div>
 
                     <div className="form-group row mt-3 d-flex justify-content-center">

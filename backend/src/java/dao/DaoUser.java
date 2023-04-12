@@ -18,13 +18,12 @@ import model.ModelUser;
  */
 public class DaoUser implements CrudUser {
 
-    String strSQL = "";
-    ModelUser usr = new ModelUser();
     ConnectionDB conexion = new ConnectionDB();
+    ModelUser usr = new ModelUser();
+    String strSQL = "";
     ResultSet rs = null;
-    boolean res = false;
 
-    //LISTAR USUARIOS
+    //LISTAR TODOS LOS USUARIOS
     @Override
     public List<ModelUser> listar() {
         ArrayList<ModelUser> lstUsers = new ArrayList<>();
@@ -63,7 +62,7 @@ public class DaoUser implements CrudUser {
     @Override
     public ModelUser list(int id) {
         try {
-            strSQL = "SELECT ID_USUARIO, NOMBRE, APELLIDO, USUARIO, EMAIL, ID_ROL, ESTADO \n"
+            strSQL = "SELECT ID_USUARIO, NOMBRE, APELLIDO, USUARIO, EMAIL, PASSWORD, ID_ROL, ESTADO \n"
                     + "FROM USUARIO \n"
                     + "WHERE ID_USUARIO = ?";
 
@@ -78,6 +77,7 @@ public class DaoUser implements CrudUser {
                 usr.setApellido(rs.getString("APELLIDO"));
                 usr.setUsuario(rs.getString("USUARIO"));
                 usr.setEmail(rs.getString("EMAIL"));
+                usr.setPassword(rs.getString("PASSWORD"));
                 usr.setRegistrarRol(rs.getInt("ID_ROL"));
                 usr.setRegistrarEstado(rs.getBoolean("ESTADO"));
             }
@@ -98,7 +98,7 @@ public class DaoUser implements CrudUser {
     @Override
     public boolean Register(ModelUser usuario) {
         boolean res = false;
-        String strSQL = "INSERT INTO USUARIO (ID_USUARIO, NOMBRE, APELLIDO, USUARIO, EMAIL, PASSWORD, ID_ROL, ESTADO) "
+        strSQL = "INSERT INTO USUARIO (ID_USUARIO, NOMBRE, APELLIDO, USUARIO, EMAIL, PASSWORD, ID_ROL, ESTADO) "
                 + "VALUES ((SELECT ISNULL(MAX(ID_USUARIO), 0) + 1 FROM USUARIO), ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -129,6 +129,7 @@ public class DaoUser implements CrudUser {
         return res;
     }
 
+    //ACTUALIZAR USUARIOS 
     @Override
     public boolean Update(ModelUser usuario) {
         boolean cambioExitoso = false;
@@ -162,7 +163,7 @@ public class DaoUser implements CrudUser {
         } finally {
             try {
                 if (pst != null) {
-                    pst.close();    
+                    pst.close();
                 }
                 if (con != null) {
                     con.close();
@@ -175,16 +176,35 @@ public class DaoUser implements CrudUser {
         return cambioExitoso;
     }
 
+    //ELIMINAR USUARIO POR ID
     @Override
     public boolean Delete(ModelUser usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            strSQL = "DELETE USUARIO WHERE ID_USUARIO = ? ";
+            Connection con = conexion.open();
+            PreparedStatement pst = con.prepareStatement(strSQL);
+            pst.setInt(1, usuario.getId());
+            int result = pst.executeUpdate();
+            return (result > 0);
+        } catch (Exception e) {
+            System.out.println("Error en Delete usuario: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                conexion.close();
+            } catch (Exception e) {
+                System.out.println("Error al eliminar usuario (cerrando conexión): " + e.getMessage());
+            }
+        }
     }
+    
 
+    //BUSQUEDA DE USUARIO POR ID
     @Override
     public List<ModelUser> Search(String usuario) {
         List<ModelUser> lst = new ArrayList<>();
         try {
-            String strSQL = "SELECT U.ID_USUARIO, U.NOMBRE, U.APELLIDO, U.USUARIO, U.EMAIL, R.NOMBRE AS ROL, "
+            strSQL = "SELECT U.ID_USUARIO, U.NOMBRE, U.APELLIDO, U.USUARIO, U.EMAIL, R.NOMBRE AS ROL, "
                     + "CASE WHEN U.ESTADO = 1 THEN 'Activo' ELSE 'Inactivo' END AS ESTADO "
                     + "FROM USUARIO U "
                     + "INNER JOIN ROL R ON U.ID_ROL = R.ID_ROL "
@@ -225,5 +245,5 @@ public class DaoUser implements CrudUser {
         }
         return lst;
     }
-
+    
 }

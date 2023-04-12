@@ -36,6 +36,7 @@ async function GetUserIDSoap(id) {
         const apellidoNode = node.getElementsByTagName("apellido")[0];
         const usuarioNode = node.getElementsByTagName("usuario")[0];
         const emailNode = node.getElementsByTagName("email")[0];
+        const passwordNode = node.getElementsByTagName("password")[0];
         const estadoNode = node.getElementsByTagName("registrarEstado")[0];
         const rolNode = node.getElementsByTagName("registrarRol")[0];
         return {
@@ -44,6 +45,7 @@ async function GetUserIDSoap(id) {
           apellido: apellidoNode ? apellidoNode.textContent : "",
           usuario: usuarioNode ? usuarioNode.textContent : "",
           email: emailNode ? emailNode.textContent : "",
+          password: passwordNode ? passwordNode.textContent : "",
           estado: estadoNode ? estadoNode.textContent : "",
           rol: rolNode ? rolNode.textContent : "",
         };

@@ -3,7 +3,7 @@ async function ReadRoleSoap() {
     const xml = `<?xml version="1.0" encoding="UTF-8"?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
     <SOAP-ENV:Header/>
     <S:Body>
-        <ns2:listarRoles xmlns:ns2="http://service/"/>
+        <ns2:listarTodosLosRoles xmlns:ns2="http://service/"/>
     </S:Body>
 </S:Envelope>`;
 
