@@ -10,8 +10,12 @@ import AnalistaDatos from "./pages/AnalistaDatos.js";
 import RegistroUsuarios from "./pages/Usuarios/RegistroUsuarios";
 import UpdateUsuarios from "./pages/Usuarios/UpdateUsuarios";
 import ReadUsuarios from "./pages/Usuarios/ReadUsuarios.js";
+import ReadRoles from "./pages/roles/ReadRoles";
 import { login, logout, resetUser } from "./Service/userAction";
-import ScrollTopTop from "./Components/ScrollTopTop";
+import ScrollTopTop from "./Components/ScrollTopTop.js";
+import RegistroRoles from "./pages/roles/RegistroRoles.js";
+import UpdateRoles from "./pages/roles/UpdateRoles.js";
+import ReadModulos from "./pages/Modulo/ReadModulos.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,12 +68,21 @@ function App() {
         {/* Si el usuario es un Administrador */}
         {user?.rol === "Administrador" && (
           <>
+            {/* RUTAS PARA MANTENIMIENTO DE USUARIOS */}
             <Route path="/dashboard/user" element={<ReadUsuarios />} />
             <Route
               path="/dashboard/user/register"
               element={<RegistroUsuarios />}
             />
             <Route path="/dashboard/user/edit" element={<UpdateUsuarios />} />
+
+            {/* RUTAS PARA MANTENIMIENTO DE LOS ROLES */}
+            <Route path="/dashboard/rol" element={<ReadRoles />} />
+            <Route path="/dashboard/rol/register" element={<RegistroRoles />} />
+            <Route path="/dashboard/rol/edit" element={<UpdateRoles />} />
+
+            {/* RUTAS PARA MANTENIMIENTO MODULOS */}
+            <Route path="/dashboard/modulo" element={<ReadModulos />} />
           </>
         )}
 

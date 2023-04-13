@@ -1,71 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Table, Form, FormControl } from "react-bootstrap";
-import { ReadUserSoap } from "../../ServiceSoap/User/ReadUserSoap.js";
-import { DeleteUserId } from "../../ServiceSoap/User/DeleteUserIDSoap.js";
-import "./ReadUsuarios.css";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { searchUserSoap } from "../../ServiceSoap/User/SearchUserSoap.js";
 import { NavLink } from "react-router-dom";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import ReadRoleSoap from "../../ServiceSoap/Rol/ReadRolSoap.js";
+import { SearchRolSoap } from "../../ServiceSoap/Rol/SearchRolSoap.js";
+import { DeleteRolID } from "../../ServiceSoap/Rol/DeleteRolIDSoap.js";
+import "./ReadRoles.css";
 
 function ReadUsuarios() {
-  const [users, setUsers] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [roles, setRoles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showList, setShowList] = useState(true);
-  const [originalUsers, setOriginalUsers] = useState([]);
+  const [originalRoles, setOriginalRoles] = useState([]);
 
-  //UseEffect que carga los usuarios utilizando ReadUserSoap si la variable de estado "users" está vacía.
+  //UseEffect que carga los roles utilizando ReadRoleSoap si la variable de estado "roles" está vacía.
   useEffect(() => {
-    const getUsers = async () => {
+    const getRoles = async () => {
       try {
-        const users = await ReadUserSoap();
-        setUsers(users);
-        setOriginalUsers(users);
+        const roles = await ReadRoleSoap();
+        setRoles(roles);
+        setOriginalRoles(roles);
       } catch (error) {
         console.log(error);
       }
     };
-    if (users.length === 0) {
-      // Solo hace la solicitud si no hay users en la variable de estado
-      getUsers();
+    if (roles.length === 0) {
+      // Solo hace la solicitud si no hay roles en la variable de estado
+      getRoles();
     }
-  }, [users]);
-
-  //Filtrar usuarios
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-  };
-
-  const filteredUsers = users.filter((user) =>
-    user.rol.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  //lista de roles
-  const roles = [...new Set(users.map((user) => user.rol))];
+  }, [roles]);
 
   //Para funcion busqueda
   const handleSearch = async () => {
     try {
-      let users;
+      let roles;
       if (searchTerm === "") {
-        users = originalUsers;
+        roles = originalRoles;
       } else {
-        users = await searchUserSoap(searchTerm);
+        roles = await SearchRolSoap(searchTerm);
       }
-      setUsers(users);
+      setRoles(roles);
       setShowList(true);
     } catch (error) {
       console.log(error);
     }
   };
 
-  //funcion para eliminar usuario
+  //funcion para eliminar Rol
   async function handleDelete(id) {
-    const response = await DeleteUserId(id);
+    const response = await DeleteRolID(id);
     if (response) {
-      alert("Eliminado correctamente");
+      alert("Rol eliminado correctamente");
       window.location.reload();
     } else {
       // manejar el error
@@ -74,11 +61,11 @@ function ReadUsuarios() {
 
   return (
     <div className="table-principal ">
-      <h1 className="text-center">Usuarios</h1>
+      <h1 className="text-center">Roles</h1>
 
       <div className="text-center mt-4">
         <NavLink
-          to="/dashboard/user/register"
+          to="/dashboard/rol/register"
           className="btn btn-warning text-white"
         >
           <FontAwesomeIcon
@@ -91,30 +78,20 @@ function ReadUsuarios() {
 
       <Form className="d-flex mr-20">
         <Form.Group controlId="formBasicFilter" className="flex-grow-1">
-          <Form.Label>Filtrar por rol:</Form.Label>
-          <Form.Control
-            className="w-auto"
-            as="select"
-            value={filter}
-            onChange={handleFilterChange}
-          >
-            <option value="">Todos</option>
-            {roles.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
+          <Form.Label>Opciones:</Form.Label>
+          <Form.Control className="w-auto" as="select">
+            <option value="">Option</option>
           </Form.Control>
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Buscar (EMAIL O USUARIO)</Form.Label>
+          <Form.Label>Buscar Rol (NOMBRE)</Form.Label>
           <FormControl
             type="search"
             style={{ width: "200px" }}
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Ingrese Email o usuario"
+            placeholder="Ingrese el nombre"
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
@@ -137,39 +114,35 @@ function ReadUsuarios() {
             <tr>
               <th>ID</th>
               <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Usuario</th>
-              <th>Email</th>
-              <th>Rol</th>
+              <th>Descripcion</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody className="text-center">
-            {filteredUsers.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.nombre}</td>
-                <td>{user.apellido}</td>
-                <td>{user.usuario}</td>
-                <td>{user.email}</td>
+            {roles.map((role) => (
+              <tr key={role.id}>
+                <td>{role.id}</td>
                 <td>
-                  <Badge bg="warning" pill>
-                    {user.rol}
+                  {" "}
+                  <Badge bg="success" pill>
+                    {role.nombre}
                   </Badge>
                 </td>
-                <td>{user.estado}</td>
+                <td>{role.descripcion}</td>
+                <td>{role.estado}</td>
+
                 <td>
                   <button
                     type="button"
                     className="btn btn-outline-danger mx-3"
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(role.id)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
 
                   <NavLink
-                    to={`/dashboard/user/edit?id=${user.id}`}
+                    to={`/dashboard/rol/edit?id=${role.id}`}
                     className="btn btn-warning text-white"
                   >
                     <FontAwesomeIcon

@@ -1,0 +1,31 @@
+.table-principal{
+    width: 100%;
+    max-width: 1300px; 
+    margin: auto;
+    margin-top: 25px;
+}
+
+.table-container{
+    margin-top: 25px;
+}
+
+
+  .table-principal th, .table-principal td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px;
+  }
+  
+  .table-principal th {
+    font-weight: bold;
+  }
+  
+  
+  .table-principal td:last-child {
+    text-align: right;
+  }
+  
+  .table-principal button {
+    margin-right: 5px;
+  }
+  
