@@ -7,8 +7,16 @@
     <service name="WebServiceRol">
       <implementation-class>service.WebServiceRol</implementation-class>
     </service>
+<<<<<<< HEAD
     <service name="WSLogin">
       <implementation-class>service.WSLogin</implementation-class>
+=======
+    <service name="WSCrudModulo">
+      <implementation-class>service.WSCrudModulo</implementation-class>
+    </service>
+    <service name="WSCrudPermiso">
+      <implementation-class>service.WSCrudPermiso</implementation-class>
+>>>>>>> master
     </service>
   </services>
   <clients>

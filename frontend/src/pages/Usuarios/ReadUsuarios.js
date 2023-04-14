@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Table, Form, FormControl } from "react-bootstrap";
 import { ReadUserSoap } from "../../ServiceSoap/User/ReadUserSoap.js";
+import { DeleteUserId } from "../../ServiceSoap/User/DeleteUserIDSoap.js";
 import "./ReadUsuarios.css";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -60,6 +61,17 @@ function ReadUsuarios() {
     }
   };
 
+  //funcion para eliminar usuario
+  async function handleDelete(id) {
+    const response = await DeleteUserId(id);
+    if (response) {
+      alert("Eliminado correctamente");
+      window.location.reload();
+    } else {
+      // manejar el error
+    }
+  }
+
   return (
     <div className="table-principal ">
       <h1 className="text-center">Usuarios</h1>
@@ -96,12 +108,13 @@ function ReadUsuarios() {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Buscar Usuario</Form.Label>
+          <Form.Label>Buscar (EMAIL O USUARIO)</Form.Label>
           <FormControl
             type="search"
             style={{ width: "200px" }}
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Ingrese Email o usuario"
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
@@ -147,7 +160,11 @@ function ReadUsuarios() {
                 </td>
                 <td>{user.estado}</td>
                 <td>
-                  <button type="button" className="btn btn-outline-danger mx-3">
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger mx-3"
+                    onClick={() => handleDelete(user.id)}
+                  >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
 
