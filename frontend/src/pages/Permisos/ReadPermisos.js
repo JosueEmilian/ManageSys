@@ -4,54 +4,54 @@ import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import ReadModulosSoap from "../../ServiceSoap/Modulo/ReadModuloSoap.js";
-import { SearchModuloSoap } from "../../ServiceSoap/Modulo/SearchModuloSoap.js";
-import { DeleteModuloIDSoap } from "../../ServiceSoap/Modulo/DeleteModuloIDSoap.js";
+import ReadPermisoSoap from "../../ServiceSoap/Permisos/ReadPermisoSoap.js";
+import { SearchPermisoSoap } from "../../ServiceSoap/Permisos/SearchPermisoSoap.js";
+import { DeletePermisoID } from "../../ServiceSoap/Permisos/DeletePermisoIDSoap.js";
 
-function ReadModulos() {
-  const [modulos, setModulos] = useState([]);
+function ReadPermisos() {
+  const [permisos, setPermisos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showList, setShowList] = useState(true);
-  const [originalModulos, setOriginalModulos] = useState([]);
+  const [originalPermisos, setOriginalPermisos] = useState([]);
 
   //UseEffect que carga los modulos utilizando ReadModuloSoap si la variable de estado "modulos" está vacía.
   useEffect(() => {
-    const getModulos = async () => {
+    const getPermisos = async () => {
       try {
-        const modulos = await ReadModulosSoap();
-        setModulos(modulos);
-        setOriginalModulos(modulos);
+        const permisos = await ReadPermisoSoap();
+        setPermisos(permisos);
+        setOriginalPermisos(permisos);
       } catch (error) {
         console.log(error);
       }
     };
-    if (modulos.length === 0) {
-      // Solo hace la solicitud si no hay modulos en la variable de estado
-      getModulos();
+    if (permisos.length === 0) {
+      // Solo hace la solicitud si no hay permisos en la variable de estado
+      getPermisos();
     }
-  }, [modulos]);
+  }, [permisos]);
 
   //Para funcion busqueda
   const handleSearch = async () => {
     try {
-      let modulos;
+      let permisos;
       if (searchTerm === "") {
-        modulos = originalModulos;
+        permisos = originalPermisos;
       } else {
-        modulos = await SearchModuloSoap(searchTerm);
+        permisos = await SearchPermisoSoap(searchTerm);
       }
-      setModulos(modulos);
+      setPermisos(permisos);
       setShowList(true);
     } catch (error) {
       console.log(error);
     }
   };
 
-  //funcion para eliminar Rol
+  //funcion para eliminar Permiso
   async function handleDelete(id) {
-    const response = await DeleteModuloIDSoap(id);
+    const response = await DeletePermisoID(id);
     if (response) {
-      alert("Modulo eliminado correctamente");
+      alert("Permiso eliminado correctamente");
       window.location.reload();
     } else {
       // manejar el error
@@ -60,18 +60,18 @@ function ReadModulos() {
 
   return (
     <div className="table-principal ">
-      <h1 className="text-center">Modulos</h1>
+      <h1 className="text-center">PERMISOS</h1>
 
       <div className="text-center mt-4">
         <NavLink
-          to="/dashboard/modulo/register"
+          to="/dashboard/permiso/register"
           className="btn btn-warning text-white"
         >
           <FontAwesomeIcon
             icon={faUserPlus}
             style={{ color: "white", fontSize: "25px", margin: "0 10px" }}
           />
-          Agregar
+          ASIGNAR PERMISO
         </NavLink>
       </div>
 
@@ -84,13 +84,13 @@ function ReadModulos() {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Buscar (PATH O NOMBRE)</Form.Label>
+          <Form.Label>Buscar (ROL O MODULO)</Form.Label>
           <FormControl
             type="search"
             style={{ width: "200px" }}
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Ingrese el path o nombre"
+            placeholder="Ingrese el Rol o Modulo"
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
@@ -112,37 +112,38 @@ function ReadModulos() {
           <thead className="text-center">
             <tr>
               <th>ID</th>
-              <th>Nombre</th>
-              <th>PATH</th>
-              <th>NIVEL</th>
-              <th>ID_MODULO_PADRE</th>
-              <th>Acciones</th>
+              <th>MODULO ASIGNADO</th>
+              <th>ROL ASIGNADO</th>
+              <th className="text-right">Acciones</th>
             </tr>
           </thead>
           <tbody className="text-center">
-            {modulos.map((modulo) => (
-              <tr key={modulo.id}>
-                <td>{modulo.id}</td>
-                <td>{modulo.nombre}</td>
+            {permisos.map((permiso) => (
+              <tr key={permiso.id}>
+                <td>{permiso.id}</td>
                 <td>
-                  <Badge bg="primary" pill>
-                    {modulo.path}
+                  <p>{permiso.nombreModulo}</p>
+                  <Badge bg="info">
+                    <p>Path: {permiso.pathModulo}</p>
                   </Badge>
                 </td>
-                <td>{modulo.nivel}</td>
-                <td>{modulo.idModuloPadre}</td>
+                <td>
+                  <Badge bg="warning" pill>
+                    {permiso.nombreRol}
+                  </Badge>
+                </td>
 
                 <td>
                   <button
                     type="button"
                     className="btn btn-outline-danger mx-3"
-                    onClick={() => handleDelete(modulo.id)}
+                    onClick={() => handleDelete(permiso.id)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
 
                   <NavLink
-                    to={`/dashboard/modulo/edit?id=${modulo.id}`}
+                    to={`/dashboard/permiso/edit?id=${permiso.id}`}
                     className="btn btn-warning text-white"
                   >
                     <FontAwesomeIcon
@@ -161,4 +162,4 @@ function ReadModulos() {
   );
 }
 
-export default ReadModulos;
+export default ReadPermisos;

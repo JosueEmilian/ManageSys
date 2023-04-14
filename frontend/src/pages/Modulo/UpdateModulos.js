@@ -1,49 +1,75 @@
 import React, { useEffect, useState } from "react";
 import "../Login.css";
+import ReadModulosSoap from "../../ServiceSoap/Modulo/ReadModuloSoap.js";
+import GetModuloIDSoap from "../../ServiceSoap/Modulo/GetModuloIDSoap.js";
+import { UpdateModuloSoap } from "../../ServiceSoap/Modulo/UpdateModuloSoap.js";
+
 import { useLocation, useNavigate } from "react-router-dom";
-import GetRolesIDSoap from "../../ServiceSoap/Rol/GetRolIDSoap.js";
-import { UpdateRolSoap } from "../../ServiceSoap/Rol/UpdateRolSoap.js";
 
-function UpdateRoles() {
+function UpdateModulo() {
   const navigate = useNavigate();
+  const [modulos, setModulos] = useState([]);
+  const [originalModulos, setOriginalModulos] = useState([]);
 
-  //Variables de registro usuario
-  const [estado, setEstado] = useState("");
+  //UseEffect que carga ID_MODULO_PADRE (NOMBRE) utilizando ReadModuloSoap si la variable de estado "modulos" está vacía.
+  useEffect(() => {
+    const getModulos = async () => {
+      try {
+        const modulos = await ReadModulosSoap();
+        setModulos(modulos);
+        setOriginalModulos(modulos);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (originalModulos.length === 0) {
+      // Solo hace la solicitud si no hay modulos en la variable de estado
+      getModulos();
+    }
+  }, [originalModulos]);
 
   //Recuperamos ID SELECCIONADO, Y MOSTRAMOS SUS DATOS EN LOS INPUTS
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
-  const [rol, setRol] = useState({
+  const [idPadre, setIdPadre] = useState(null); // Para lista seleccionable
+
+  const [modulo, setModulo] = useState({
     id: "",
     nombre: "",
-    descripcion: "",
-    estado: "",
+    path: "",
+    nivel: "",
   });
 
   useEffect(() => {
-    async function fetchRoles() {
+    async function fetchModulo() {
       try {
-        const result = await GetRolesIDSoap(id);
-        setRol(result[0]);
+        const result = await GetModuloIDSoap(id);
+        setModulo(result[0]);
       } catch (error) {
         console.error(error);
       }
     }
-    fetchRoles();
+    fetchModulo();
   }, [id]);
 
   //PARA REGISTRAR EL USUARIO
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await UpdateRolSoap(rol.nombre, rol.descripcion, estado, id);
-      alert("Usuario actualizado exitosamente!");
-      navigate("/dashboard/rol");
+      await UpdateModuloSoap(
+        modulo.nombre,
+        modulo.path,
+        modulo.nivel,
+        idPadre,
+        id
+      );
+      alert("Modulo actualizado exitosamente!");
+      navigate("/dashboard/modulo");
     } catch (error) {
       console.error(error);
-      alert("Hubo un error al registrar el rol.");
+      alert("Hubo un error al registrar el modulo.");
     }
   };
 
@@ -60,16 +86,16 @@ function UpdateRoles() {
                   </div>
                 </div>
                 <div className="card-body p-lg-5">
-                  <h3 className="mb-4">Registrar Roles! 🧑‍💻 </h3>
+                  <h3 className="mb-4">Editar Modulos! 🧑‍💻 </h3>
                   <p className="text-muted text-sm mb-5">Registro de roles</p>
                   <form onSubmit={handleSubmit}>
                     <div className="form-floating mb-3">
                       <input
                         className="form-control"
                         type="text"
-                        value={rol.nombre}
+                        value={modulo.nombre}
                         onChange={(event) =>
-                          setRol({ ...rol, nombre: event.target.value })
+                          setModulo({ ...modulo, nombre: event.target.value })
                         }
                         required
                       />
@@ -80,29 +106,45 @@ function UpdateRoles() {
                       <input
                         className="form-control"
                         type="text"
-                        value={rol.descripcion}
+                        value={modulo.path}
                         onChange={(event) =>
-                          setRol({ ...rol, descripcion: event.target.value })
+                          setModulo({ ...modulo, path: event.target.value })
                         }
                         required
                       />
-                      <label for="floatingPassword">Descripcion</label>
+                      <label for="floatingPassword">PATH</label>
+                    </div>
+
+                    <div className="form-floating mb-3">
+                      <input
+                        className="form-control"
+                        type="text"
+                        value={modulo.nivel}
+                        onChange={(event) =>
+                          setModulo({ ...modulo, nivel: event.target.value })
+                        }
+                        required
+                      />
+                      <label for="floatingPassword">Nivel</label>
                     </div>
 
                     <div className="form-group row mt-3 d-flex justify-content-center">
                       <div className="col-sm-4 d-flex flex-column align-items-center">
                         <label htmlFor="estado" className="mb-1 text-center">
-                          ESTADO
+                          SELECCIONA EL MODULO PADRE
                         </label>
                         <select
                           id="estado"
                           className="form-control text-center"
-                          value={estado}
-                          onChange={(event) => setEstado(event.target.value)}
+                          value={idPadre}
+                          onChange={(event) => setIdPadre(event.target.value)}
                         >
-                          <option value="">Define el Estado</option>
-                          <option value="1">Activo</option>
-                          <option value="0">Inactivo</option>
+                          <option value="">Ninguno</option>
+                          {modulos.map((modulo) => (
+                            <option key={modulo.id} value={modulo.id}>
+                              {modulo.nombre + "--> Nivel: " + modulo.nivel}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -128,4 +170,4 @@ function UpdateRoles() {
   );
 }
 
-export default UpdateRoles;
+export default UpdateModulo;

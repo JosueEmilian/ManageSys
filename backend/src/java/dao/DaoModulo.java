@@ -24,7 +24,7 @@ public class DaoModulo implements CrudModulo {
     String strSQL = "";
 
     //LISTAR TODOS LOS MODULOS
-    //Utilizando cáusala CTE, realiza búsqueda jerárquica de los modulos. 
+    //Utilizando clausula CTE, realiza búsqueda jerárquica de los modulos. 
     @Override
     public List<ModelModulo> listar() {
         ArrayList<ModelModulo> lstModulo = new ArrayList<>();

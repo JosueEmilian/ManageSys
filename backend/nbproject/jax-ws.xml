@@ -13,6 +13,9 @@
     <service name="WSCrudModulo">
       <implementation-class>service.WSCrudModulo</implementation-class>
     </service>
+    <service name="WSCrudPermiso">
+      <implementation-class>service.WSCrudPermiso</implementation-class>
+    </service>
   </services>
   <clients>
   </clients>

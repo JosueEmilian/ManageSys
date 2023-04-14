@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { login, logout, resetUser } from "./Service/userAction";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import HomePublic from "./pages/HomePublic";
@@ -11,11 +12,15 @@ import RegistroUsuarios from "./pages/Usuarios/RegistroUsuarios";
 import UpdateUsuarios from "./pages/Usuarios/UpdateUsuarios";
 import ReadUsuarios from "./pages/Usuarios/ReadUsuarios.js";
 import ReadRoles from "./pages/roles/ReadRoles";
-import { login, logout, resetUser } from "./Service/userAction";
 import ScrollTopTop from "./Components/ScrollTopTop.js";
 import RegistroRoles from "./pages/roles/RegistroRoles.js";
 import UpdateRoles from "./pages/roles/UpdateRoles.js";
 import ReadModulos from "./pages/Modulo/ReadModulos.js";
+import RegistroModulos from "./pages/Modulo/RegistroModulos.js";
+import UpdateModulo from "./pages/Modulo/UpdateModulos.js";
+import ReadPermisos from "./pages/Permisos/ReadPermisos.js";
+import RegistrarPermiso from "./pages/Permisos/RegistroPermisos.js";
+import UpdatePermiso from "./pages/Permisos/UpdatePermisos.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +58,7 @@ function App() {
       <Navigation isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <Routes>
         <Route index element={<HomePublic />} />
+
         {/* Si el usuario no está logueado, lo redirige a la página de login */}
         {!isLoggedIn && (
           <>
@@ -83,6 +89,19 @@ function App() {
 
             {/* RUTAS PARA MANTENIMIENTO MODULOS */}
             <Route path="/dashboard/modulo" element={<ReadModulos />} />
+            <Route
+              path="/dashboard/modulo/register"
+              element={<RegistroModulos />}
+            />
+            <Route path="/dashboard/modulo/edit" element={<UpdateModulo />} />
+
+            {/* RUTAS PARA MANTENIMIENTO PERMISOS */}
+            <Route path="/dashboard/permiso" element={<ReadPermisos />} />
+            <Route
+              path="/dashboard/permiso/register"
+              element={<RegistrarPermiso />}
+            />
+            <Route path="/dashboard/permiso/edit" element={<UpdatePermiso />} />
           </>
         )}
 
