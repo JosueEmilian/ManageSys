@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
   <services>
-    <service name="WSCrudUser">
-      <implementation-class>service.WSCrudUser</implementation-class>
-    </service>
-    <service name="WebServiceRol">
-      <implementation-class>service.WebServiceRol</implementation-class>
-    </service>
-<<<<<<< HEAD
-    <service name="WSLogin">
-      <implementation-class>service.WSLogin</implementation-class>
-=======
     <service name="WSCrudModulo">
       <implementation-class>service.WSCrudModulo</implementation-class>
     </service>
     <service name="WSCrudPermiso">
       <implementation-class>service.WSCrudPermiso</implementation-class>
->>>>>>> master
+    </service>
+    <service name="WSLogin">
+      <implementation-class>service.WSLogin</implementation-class>
+    </service>
+    <service name="WebServiceRol">
+      <implementation-class>service.WebServiceRol</implementation-class>
+    </service>
+    <service name="WSCrudUser">
+      <implementation-class>service.WSCrudUser</implementation-class>
     </service>
   </services>
-  <clients>
-  </clients>
+  <clients/>
 </jax-ws>

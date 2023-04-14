@@ -25,11 +25,7 @@ public class ConnectionDB {
     public Connection open() throws ClassNotFoundException {
         try {
             Class.forName(driver);
-<<<<<<< HEAD
             con = DriverManager.getConnection(url, "emilianjosue", "123");
-=======
-            con = DriverManager.getConnection(url, "sa", "Administrador_123");
->>>>>>> master
         } catch (SQLException e) {
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Excepción: " + e.getMessage());
