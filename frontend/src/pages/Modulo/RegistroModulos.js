@@ -59,7 +59,7 @@ function RegistrarModulo() {
                 </div>
                 <div className="card-body p-lg-5">
                   <h3 className="mb-4">Registrar Modulos! 🧑‍💻 </h3>
-                  <p className="text-muted text-sm mb-5">Registro de roles</p>
+                  <p className="text-muted text-sm mb-5">Registro de modulos</p>
                   <form onSubmit={handleSubmit}>
                     <div className="form-floating mb-3">
                       <input

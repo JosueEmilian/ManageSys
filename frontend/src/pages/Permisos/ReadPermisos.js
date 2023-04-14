@@ -112,8 +112,8 @@ function ReadPermisos() {
           <thead className="text-center">
             <tr>
               <th>ID</th>
-              <th>MODULO ASIGNADO</th>
               <th>ROL ASIGNADO</th>
+              <th>MODULO ASIGNADO</th>
               <th className="text-right">Acciones</th>
             </tr>
           </thead>
@@ -122,14 +122,15 @@ function ReadPermisos() {
               <tr key={permiso.id}>
                 <td>{permiso.id}</td>
                 <td>
+                  <Badge bg="warning" pill>
+                    {permiso.nombreRol}
+                  </Badge>
+                </td>
+
+                <td>
                   <p>{permiso.nombreModulo}</p>
                   <Badge bg="info">
                     <p>Path: {permiso.pathModulo}</p>
-                  </Badge>
-                </td>
-                <td>
-                  <Badge bg="warning" pill>
-                    {permiso.nombreRol}
                   </Badge>
                 </td>
 

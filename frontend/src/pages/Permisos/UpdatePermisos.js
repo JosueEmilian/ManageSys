@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../Login.css";
 import ReadModulosSoap from "../../ServiceSoap/Modulo/ReadModuloSoap.js";
 import ReadRoleSoap from "../../ServiceSoap/Rol/ReadRolSoap.js";
-import { RegistrarPermisoSoap } from "../../ServiceSoap/Permisos/RegisterPermisosSoap.js";
 import GetPermisoIDSoap from "../../ServiceSoap/Permisos/GetPermisoIDSoap.js";
+import { UpdatePermisoSoap } from "../../ServiceSoap/Permisos/UpdatePermisoSoap.js";
 import ModalModulos from "../../Components/ModalModulos.js";
 import ModalRoles from "../../Components/ModalRoles.js";
 
@@ -16,6 +16,8 @@ function UpdatePermiso() {
   const [roles, setRoles] = useState([]);
   const [originalModulos, setOriginalModulos] = useState([]);
   const [originalRoles, setOriginalRoles] = useState([]);
+  const [idModulo, setIdModulo] = useState("");
+  const [idRol, setIdRol] = useState("");
 
   //UseEffect que carga la DATA MODULOS  utilizando ReadModuloSoap si la variable de estado "modulos" está vacía.
   useEffect(() => {
@@ -71,23 +73,7 @@ function UpdatePermiso() {
     setShowRol(false);
   };
 
-  //ASIGNACION O REGISTRO DE PERMISOS
-  const [idModulo, setIdModulo] = useState("");
-  const [idRol, setIdRol] = useState("");
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      await RegistrarPermisoSoap(idModulo, idRol);
-      alert("Permiso Asignado exitosamente!");
-      navigate("/dashboard/permiso");
-    } catch (error) {
-      console.error(error);
-      alert("Hubo un error al asignar el permiso");
-    }
-  };
-
-  //Recuperamos ID SELECCIONADO, Y MOSTRAMOS SUS DATOS EN LOS INPUTS
+  //Recuperamos ID SELECCIONADO, Y MOSTRAMOS SUS DATOS ANTERIORES EN LOS INPUTS
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
@@ -110,6 +96,19 @@ function UpdatePermiso() {
     fetchModulo();
   }, [id]);
 
+  //PARA ACTUALIZAR EL PERMISO
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await UpdatePermisoSoap(idModulo, idRol, id);
+      alert("Permiso actualizado exitosamente!");
+      navigate("/dashboard/permiso");
+    } catch (error) {
+      console.error(error);
+      alert("Hubo un error al actualizar el permiso.");
+    }
+  };
+
   return (
     <>
       <div className="App">
@@ -124,29 +123,32 @@ function UpdatePermiso() {
                     </div>
                   </div>
                   <div className="card-body p-lg-5">
-                    <h3 className="mb-4">Actualizacion de Permisos! 🧑‍💻 </h3>
+                    <h2 className="mb-4">Actualizacion de Permisos! 🧑‍💻 </h2>
                     <p className="text-muted text-sm mb-5">
                       Asignacion de permisos
                     </p>
                     <form onSubmit={handleSubmit}>
                       <div className="seleccion-anterior">
-                        <h3>Permisos Asignados Actualmente</h3>
                         <div className="form-floating mb-3">
                           <input
                             className="form-control"
                             type="text"
                             value={permiso.nombreRol}
+                            disabled
                           />
-                          <label for="floatingInput">Rol Asignado</label>
+                          <label>Rol anterior</label>
                         </div>
 
                         <div className="form-floating mb-3">
                           <input
-                            className="form-control"
                             type="text"
+                            className="form-control"
+                            id="idModulo"
                             value={permiso.nombreModulo}
+                            disabled
                           />
-                          <label for="floatingInput">Modulo</label>
+
+                          <label>Modulo anterior</label>
                         </div>
                       </div>
 
