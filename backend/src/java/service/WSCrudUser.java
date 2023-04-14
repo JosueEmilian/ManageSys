@@ -86,4 +86,11 @@ public class WSCrudUser {
         boolean cambioExitoso = daoUser.Update(modelUser);
         return cambioExitoso;
     }
+
+//WEBMETHOD --> ELIMINAR DATOS USUARIO POR ID
+    @WebMethod(operationName = "EliminarUsuarios")
+    public boolean eliminarUsuario(@WebParam(name = "ID") int id) {
+        modelUser.setId(id);
+        return daoUser.Delete(modelUser);
+    }
 }

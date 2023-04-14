@@ -11,9 +11,9 @@ public interface CrudRol {
 
     List<ModelRol> listar();
     public ModelRol list(int id);
-    public boolean Register(ModelRol usuario);
-    public boolean Update(ModelRol usuario);
-    public boolean Delete(ModelRol usuario);
-    public List<ModelRol> Search(String usuario);
+    public boolean Register(ModelRol rol);
+    public boolean Update(ModelRol rol);
+    public boolean Delete(ModelRol rol);
+    public List<ModelRol> Search(String rol);
 
 }

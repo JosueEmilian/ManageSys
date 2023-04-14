@@ -13,7 +13,7 @@ export function buildXml(email, password) {
 
 export function loginUsr(email, password, onSuccess, onError) {
   const xml = buildXml(email, password);
-  fetch("http://localhost:8080/backend/WSLogin", {
+  fetch("http://localhost:8080/backend/WSLogin?WSDL", {
     method: "POST",
     headers: { "Content-Type": "text/xml" },
     body: xml,
