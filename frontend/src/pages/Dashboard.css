@@ -1,0 +1,23 @@
+.principal-text{
+  text-align: center;
+  margin-top: 35px;
+  color: #dd4b4b;
+}
+
+.custom-margin {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+  } 
+
+  a{
+    text-decoration: none;
+    color: #ffaa00;
+  }
+
+
+/* hover para la etiqueta a */
+a:hover{
+  color: #ff4400;
+  text-decoration: none;
+}
