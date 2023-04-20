@@ -9,7 +9,7 @@ export async function RegistrarPermisoSoap(idModulo, idRol) {
                 </Envelope>`;
 
   const response = await fetch(
-    "http://localhost:8080/backend/WSCrudPermiso?WSDL",
+    "http://20.250.6.150:8080/backend/WSCrudPermiso?WSDL",
     {
       method: "POST",
       headers: { "Content-Type": "text/xml" },

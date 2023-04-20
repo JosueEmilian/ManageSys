@@ -10,7 +10,7 @@ async function GetUserIDSoap(id) {
     </S:Envelope>`;
 
     const response = await fetch(
-      "http://localhost:8080/backend/WSCrudUser?WSDL",
+      "http://20.250.6.150:8080/backend/WSCrudUser?WSDL",
       {
         method: "POST",
         headers: { "Content-Type": "text/xml" },

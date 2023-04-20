@@ -11,7 +11,7 @@ export async function RegisterRolSoap(nombre, descripcion, estado) {
         </S:Envelope>`;
 
   const response = await fetch(
-    "http://localhost:8080/backend/WebServiceRol?WSDL",
+    "http://20.250.6.150:8080/backend/WebServiceRol?WSDL",
     {
       method: "POST",
       headers: { "Content-Type": "text/xml" },

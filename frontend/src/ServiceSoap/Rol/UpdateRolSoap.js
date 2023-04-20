@@ -12,7 +12,7 @@ export async function UpdateRolSoap(nombre, descripcion, estado, id) {
         </S:Envelope>`;
 
   const response = await fetch(
-    "http://localhost:8080/backend/WebServiceRol?WSDL",
+    "http://20.250.6.150:8080/backend/WebServiceRol?WSDL",
     {
       method: "POST",
       headers: { "Content-Type": "text/xml" },

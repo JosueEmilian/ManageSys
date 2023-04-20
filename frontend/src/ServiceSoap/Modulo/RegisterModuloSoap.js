@@ -11,7 +11,7 @@ export async function RegisterModuloSoap(nombre, path, nivel, idPadre) {
                 </Envelope>`;
 
   const response = await fetch(
-    "http://localhost:8080/backend/WSCrudModulo?WSDL",
+    "http://20.250.6.150:8080/backend/WSCrudModulo?WSDL",
     {
       method: "POST",
       headers: { "Content-Type": "text/xml" },
