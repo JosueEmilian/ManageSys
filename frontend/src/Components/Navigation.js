@@ -43,9 +43,17 @@ function Navigation() {
                     <LinkContainer to="/dashboard">
                       <NavDropdown.Item>Dashboard</NavDropdown.Item>
                     </LinkContainer>
+                    <LinkContainer to="/">
+                      <NavDropdown.Item>Home</NavDropdown.Item>
+                    </LinkContainer>
+                  </>
+                )}
 
-                    <LinkContainer to="/dashboard/user">
-                      <NavDropdown.Item>Usuarios</NavDropdown.Item>
+                {/* Si el usuario es Analista */}
+                {user?.rol === "Analista" && (
+                  <>
+                    <LinkContainer to="/analisis-datos">
+                      <NavDropdown.Item>Analisis de Datos</NavDropdown.Item>
                     </LinkContainer>
                   </>
                 )}
@@ -53,7 +61,7 @@ function Navigation() {
                 {user?.rol !== "Administrador" && (
                   <>
                     <LinkContainer to="/home">
-                      <NavDropdown.Item>Perfil</NavDropdown.Item>
+                      <NavDropdown.Item>Home</NavDropdown.Item>
                     </LinkContainer>
                   </>
                 )}
