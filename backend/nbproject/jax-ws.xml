@@ -16,6 +16,12 @@
     <service name="WSCrudPermiso">
       <implementation-class>service.WSCrudPermiso</implementation-class>
     </service>
+    <service name="WSArea">
+      <implementation-class>service.WSArea</implementation-class>
+    </service>
+    <service name="WSMesa">
+      <implementation-class>service.WSMesa</implementation-class>
+    </service>
   </services>
   <clients>
   </clients>

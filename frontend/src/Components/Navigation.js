@@ -66,6 +66,21 @@ function Navigation() {
                   </>
                 )}
 
+                {/* Si el usuario es Mesero */}
+                {user?.rol === "Mesero" && (
+                  <>
+                    <LinkContainer to="/monitoreo-pedido">
+                      <NavDropdown.Item>Mesas</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/monitoreo-pedido/asignar-pedido">
+                      <NavDropdown.Item>Asignar Pedido</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/pedidos">
+                      <NavDropdown.Item>Pedidos</NavDropdown.Item>
+                    </LinkContainer>
+                  </>
+                )}
+
                 <NavDropdown.Divider />
                 <div className="text-center logout-btn">
                   <Button variant="warning" onClick={handleLogout}>

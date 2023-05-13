@@ -1,0 +1,20 @@
+  .mesa {
+    width: 300px;
+    height: 300px;
+    padding: 20;
+    margin-bottom: 40;
+    /* border: 2px solid black; */
+    cursor: pointer;
+  }
+  
+  .disponible {
+    background-color: green;
+    color: white;
+  }
+  
+  .no-disponible {
+    background-color: red;
+    color: white;
+  }
+  
+  
