@@ -21,6 +21,8 @@ import UpdateModulo from "./pages/Modulo/UpdateModulos.js";
 import ReadPermisos from "./pages/Permisos/ReadPermisos.js";
 import RegistrarPermiso from "./pages/Permisos/RegistroPermisos.js";
 import UpdatePermiso from "./pages/Permisos/UpdatePermisos.js";
+import MonitoreoPedido from "./pages/Meseros/MonitoreoPedido";
+import AsignarPedido from "./pages/Meseros/AsignarPedido";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +47,7 @@ function App() {
     "/dashboard": Dashboard,
     "/home": Home,
     "/analisis-datos": AnalistaDatos,
+    "/monitoreo-pedido": MonitoreoPedido,
   };
 
   //Logica segun su modulo tabla db
@@ -102,6 +105,18 @@ function App() {
               element={<RegistrarPermiso />}
             />
             <Route path="/dashboard/permiso/edit" element={<UpdatePermiso />} />
+          </>
+        )}
+
+        {/* Si el usuario es un Mesero */}
+        {/* Rutas mantenimiento MESERO */}
+        {user?.rol === "Mesero" && (
+          <>
+            <Route path="/monitoreo-pedido" element={<MonitoreoPedido />} />
+            <Route
+              path="/monitoreo-pedido/asignar-pedido"
+              element={<AsignarPedido />}
+            />
           </>
         )}
 

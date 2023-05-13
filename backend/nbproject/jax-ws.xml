@@ -4,14 +4,20 @@
     <service name="WSCrudModulo">
       <implementation-class>service.WSCrudModulo</implementation-class>
     </service>
-    <service name="WSCrudPermiso">
-      <implementation-class>service.WSCrudPermiso</implementation-class>
+    <service name="WSArea">
+      <implementation-class>service.WSArea</implementation-class>
+    </service>
+    <service name="WSMesa">
+      <implementation-class>service.WSMesa</implementation-class>
     </service>
     <service name="WSLogin">
       <implementation-class>service.WSLogin</implementation-class>
     </service>
     <service name="WebServiceRol">
       <implementation-class>service.WebServiceRol</implementation-class>
+    </service>
+    <service name="WSCrudPermiso">
+      <implementation-class>service.WSCrudPermiso</implementation-class>
     </service>
     <service name="WSCrudUser">
       <implementation-class>service.WSCrudUser</implementation-class>
