@@ -25,7 +25,7 @@ const MesasPorArea = () => {
         // verificación si areasResponse es un array
         const areasFormatted = areasResponse.map((area) => {
           return {
-            id: area.id,
+            id: area.id._text,
             descripcion: area.descripcion._text,
           };
         });
@@ -41,7 +41,7 @@ const MesasPorArea = () => {
     console.log("AREA SELECCIONADA:", id);
     setSelectedArea(id);
     try {
-      const response = await fetchMesasAreas(parseInt(id._text));
+      const response = await fetchMesasAreas(parseInt(id));
       if (response) {
         const mesasResponse =
           response["S:Envelope"]["S:Body"]["ns2:listarMesasDeAreaResponse"][
@@ -51,7 +51,7 @@ const MesasPorArea = () => {
         let mesasFormatted = Array.isArray(mesasResponse)
           ? mesasResponse.map((mesa) => {
               return {
-                id: mesa.id,
+                id: mesa.id._text,
                 descripcion: mesa.descripcion._text,
                 asientos: mesa.asientos._text,
                 estado: mesa.estado._text,
@@ -59,7 +59,7 @@ const MesasPorArea = () => {
             })
           : [
               {
-                id: mesasResponse.id,
+                id: mesasResponse.id._text,
                 descripcion: mesasResponse.descripcion._text,
                 asientos: mesasResponse.asientos._text,
                 estado: mesasResponse.estado._text,
@@ -74,9 +74,9 @@ const MesasPorArea = () => {
 
   //CAMBIO DE ESTADO DE LAS MESAS
   const handleEstadoMesaClick = async ({ id }) => {
-    console.log("MESA SELECCIONADA:", id._text);
+    console.log("MESA SELECCIONADA:", id);
     try {
-      await fetchUpdateMesas(parseInt(id._text));
+      await fetchUpdateMesas(parseInt(id));
       handleAreaClick({ id: selectedArea }); //
     } catch (error) {
       console.error(error);
@@ -116,7 +116,7 @@ const MesasPorArea = () => {
               >
                 {/* <Link to={`/monitoreo-pedido/asignar-pedido/`}> */}
                 <Card.Body>
-                  <Card.Title>{`ID: ${mesa.id._text} ${mesa.descripcion}`}</Card.Title>
+                  <Card.Title>{`ID: ${mesa.id} ${mesa.descripcion}`}</Card.Title>
                   <Card.Subtitle>{`Estado: ${mesa.estado}`}</Card.Subtitle>
                   <Card.Text>{`Asientos: ${mesa.asientos}`}</Card.Text>
                 </Card.Body>
