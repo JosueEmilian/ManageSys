@@ -22,11 +22,11 @@
     <service name="WSMesa">
       <implementation-class>service.WSMesa</implementation-class>
     </service>
-    <service name="WsClienteNuevo">
-      <implementation-class>service.WsClienteNuevo</implementation-class>
-    </service>
     <service name="WSTransaction">
       <implementation-class>service.WSTransaction</implementation-class>
+    </service>
+    <service name="WsClienteNuevo">
+      <implementation-class>service.WsClienteNuevo</implementation-class>
     </service>
   </services>
   <clients>

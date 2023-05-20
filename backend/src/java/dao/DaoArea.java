@@ -46,13 +46,18 @@ public class DaoArea implements AreaInterface {
                 area.setStrEstado(rs.getString("ESTADO_DESCRIPCION"));
                 lstArea.add(area);
             }
-            rs.close();
-            conexion.close();
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DaoArea.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(DaoArea.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                conexion.close();
+                            rs.close();
+            } catch (Exception e) {
+                
+            }
         }
         return lstArea;
     }
