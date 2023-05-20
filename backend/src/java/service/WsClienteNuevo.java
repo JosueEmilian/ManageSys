@@ -48,6 +48,7 @@ public class WsClienteNuevo {
         modeloCliente.setNickname(nickname);
         modeloCliente.setDireccion(direccion);
         modeloCliente.setTelefono(telefono);
+        modeloCliente.setEstado(1);
         boolean respuesta = daoCliente.insertarCliente(modeloCliente);
         return respuesta;
     } 
@@ -75,4 +76,9 @@ public class WsClienteNuevo {
         return cambioExitoso;
     }
     
+    
+    @WebMethod(operationName = "eliminarCliente")
+    public boolean eliminarCliente(@WebParam(name = "id") int id) { 
+        return daoCliente.eliminarCliente(id);
+    }
 }

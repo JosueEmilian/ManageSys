@@ -16,4 +16,5 @@ public interface ClienteInterface {
     public ModeloCliente infoCliente (int id);
     public boolean insertarCliente(ModeloCliente cliente);
     public boolean modificarCliente(ModeloCliente cliente);
+    public boolean eliminarCliente(int idCliente);
 }

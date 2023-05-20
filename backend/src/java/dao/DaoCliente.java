@@ -31,7 +31,7 @@ public class DaoCliente implements ClienteInterface {
     public List<ModeloCliente> clientes() {
         ArrayList<ModeloCliente> lsClientes = new ArrayList<>();
         try {
-            strSQL = "select * from cliente ";
+            strSQL = "select * from cliente where estado = 1 or estado is null ";
             conexion.open();
             rs = conexion.executeQuery(strSQL);
 
@@ -95,8 +95,8 @@ public class DaoCliente implements ClienteInterface {
     @Override
     public boolean insertarCliente(ModeloCliente cliente) {
         boolean res = false;
-        strSQL = "INSERT INTO cliente (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO) "
-                + "VALUES ((SELECT ISNULL(MAX(ID_CLIENTE), 0) + 1 FROM CLIENTE), ?, ?, ?, ?, ?, ?, ?)";
+        strSQL = "INSERT INTO cliente (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO, ESTADO) "
+                + "VALUES ((SELECT ISNULL(MAX(ID_CLIENTE), 0) + 1 FROM CLIENTE), ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection con = conexion.open();
@@ -107,7 +107,8 @@ public class DaoCliente implements ClienteInterface {
             pst.setString(4, cliente.getNickname());
             pst.setString(5, cliente.getDireccion());
             pst.setString(6, cliente.getTelefono()); 
-
+            pst.setInt(7, cliente.getEstado());
+            
             int result = pst.executeUpdate();
 
             if (result > 0) {
@@ -169,5 +170,26 @@ public class DaoCliente implements ClienteInterface {
 
         return cambioExitoso;
 
+    }
+
+    @Override
+    public boolean eliminarCliente(int idCliente) {
+        try {
+            strSQL = "UDPATE CLIENTE SET ESTADO = 0 WHERE ID_USUARIO = ? ";
+            Connection con = conexion.open();
+            PreparedStatement pst = con.prepareStatement(strSQL);
+            pst.setInt(1, idCliente);
+            int result = pst.executeUpdate();
+            return (result > 0);
+        } catch (Exception e) {
+            System.out.println("Error en Delete usuario: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                conexion.close();
+            } catch (Exception e) {
+                System.out.println("Error al eliminar usuario (cerrando conexión): " + e.getMessage());
+            }
+        }
     }
 }

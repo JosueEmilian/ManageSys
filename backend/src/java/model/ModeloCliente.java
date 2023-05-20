@@ -79,5 +79,14 @@ public class ModeloCliente {
     private String nickname;
     private String direccion;
     private String telefono;
+    private int estado;
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
     
 }
