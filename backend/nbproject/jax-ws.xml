@@ -25,7 +25,11 @@
     <service name="WsCliente">
       <implementation-class>service.WsCliente</implementation-class>
     </service>
+    <service name="WSTransaction">
+      <implementation-class>service.WSTransaction</implementation-class>
+    </service>
   </services>
   <clients>
   </clients>
+  <jsr109>true</jsr109>
 </jax-ws>
