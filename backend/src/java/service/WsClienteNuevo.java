@@ -26,7 +26,8 @@ public class WsClienteNuevo {
     }
     
     
-    @WebMethod(operationName = "getClienteID")
+
+    @WebMethod(operationName = "getClienteId")
     public ModeloCliente obtenerCliente(@WebParam(name = "id") int id){
         return daoCliente.infoCliente(id);
     }
@@ -54,7 +55,7 @@ public class WsClienteNuevo {
     } 
     
     
-    @WebMethod(operationName = "actualizarUsuario")
+    @WebMethod(operationName = "actualizarCliente")
     public boolean actualizarCliente(
             @WebParam(name = "nombre") String nombre,
             @WebParam(name = "nit") String nit,
