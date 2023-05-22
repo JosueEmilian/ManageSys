@@ -175,7 +175,7 @@ public class DaoCliente implements ClienteInterface {
     @Override
     public boolean eliminarCliente(int idCliente) {
         try {
-            strSQL = "UDPATE CLIENTE SET ESTADO = 0 WHERE ID_USUARIO = ? ";
+            strSQL = "UPDATE  CLIENTE SET ESTADO = 0 WHERE ID_USUARIO = ? ";
             Connection con = conexion.open();
             PreparedStatement pst = con.prepareStatement(strSQL);
             pst.setInt(1, idCliente);
