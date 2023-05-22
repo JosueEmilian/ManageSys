@@ -42,8 +42,8 @@ public class DaoTransaction implements TransactionInterface {
             int generatedClientId = maxClientId + 1;
 
             // Insertamos el cliente en la tabla CLIENTE
-            String insertClienteQuery = "INSERT INTO CLIENTE (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String insertClienteQuery = "INSERT INTO CLIENTE (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO, ESTADO) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
             pst = con.prepareStatement(insertClienteQuery);
             pst.setInt(1, generatedClientId);
             pst.setString(2, transaction.getNombreCliente());

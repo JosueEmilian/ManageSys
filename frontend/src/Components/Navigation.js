@@ -101,6 +101,9 @@ function Navigation() {
               <LinkContainer to="/mesas">
                 <NavDropdown.Item>Registrar Mesas</NavDropdown.Item>
               </LinkContainer>
+              <LinkContainer to="/clientes">
+                <NavDropdown.Item>Registrar Clientes</NavDropdown.Item>
+              </LinkContainer>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

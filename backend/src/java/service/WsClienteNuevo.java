@@ -26,7 +26,7 @@ public class WsClienteNuevo {
     }
     
     
-    @WebMethod(operationName = "getUsuarioId")
+    @WebMethod(operationName = "getClienteID")
     public ModeloCliente obtenerCliente(@WebParam(name = "id") int id){
         return daoCliente.infoCliente(id);
     }

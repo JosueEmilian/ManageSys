@@ -29,6 +29,7 @@ import UpdateArea from "./pages/Areas/UpdateArea.js";
 import ReadMesas from "./pages/Mesas/ReadMesas.js";
 import RegistroMesas from "./pages/Mesas/RegistroMesas.js";
 import UpdateMesa from "./pages/Mesas/UpdateMesa.js";
+import ReadClientes from "./pages/clientes/ReadClientes.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -133,6 +134,9 @@ function App() {
             <Route path="/mesas" element={<ReadMesas />} />
             <Route path="/mesas/mesas-register" element={<RegistroMesas />} />
             <Route path="/mesas/mesas-edit" element={<UpdateMesa />} />
+
+            {/* RUTAS PARA MANTENIMIENTO DE CLIENTES */}
+            <Route path="/clientes" element={<ReadClientes />} />
           </>
         )}
 

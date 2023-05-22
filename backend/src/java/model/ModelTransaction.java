@@ -13,6 +13,7 @@ public class ModelTransaction {
     private String nicknameCliente;
     private String direccionCliente;
     private String telefonoCliente;
+    private int estado;
     
     //VAR PEDIDO
     private int idPedido;
@@ -36,7 +37,7 @@ public class ModelTransaction {
     public ModelTransaction() {
     }
 
-    public ModelTransaction(int idCliente, String nombreCliente, String nitCliente, String razonSocialCliente, String nicknameCliente, String direccionCliente, String telefonoCliente, int idPedido, int idMesa, int idEmpleado, double totalPedido, String observacionPedido, boolean estadoPedido, Date fechaPedido, int idDetallePedido, int idCombo, int cantidadDetalle, double precioDetalle, double totalLineaDetalle, String observacionDetalle, boolean estadoDetalle, Date fechaDetalle) {
+    public ModelTransaction(int idCliente, String nombreCliente, String nitCliente, String razonSocialCliente, String nicknameCliente, String direccionCliente, String telefonoCliente, int estado, int idPedido, int idMesa, int idEmpleado, double totalPedido, String observacionPedido, boolean estadoPedido, Date fechaPedido, int idDetallePedido, int idCombo, int cantidadDetalle, double precioDetalle, double totalLineaDetalle, String observacionDetalle, boolean estadoDetalle, Date fechaDetalle) {
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
         this.nitCliente = nitCliente;
@@ -44,6 +45,7 @@ public class ModelTransaction {
         this.nicknameCliente = nicknameCliente;
         this.direccionCliente = direccionCliente;
         this.telefonoCliente = telefonoCliente;
+        this.estado = estado;
         this.idPedido = idPedido;
         this.idMesa = idMesa;
         this.idEmpleado = idEmpleado;
@@ -115,6 +117,14 @@ public class ModelTransaction {
 
     public void setTelefonoCliente(String telefonoCliente) {
         this.telefonoCliente = telefonoCliente;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public int getIdPedido() {
@@ -236,6 +246,6 @@ public class ModelTransaction {
     public void setFechaDetalle(Date fechaDetalle) {
         this.fechaDetalle = fechaDetalle;
     }
-    
+
     
 }
