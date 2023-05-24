@@ -21,8 +21,15 @@ import UpdateModulo from "./pages/Modulo/UpdateModulos.js";
 import ReadPermisos from "./pages/Permisos/ReadPermisos.js";
 import RegistrarPermiso from "./pages/Permisos/RegistroPermisos.js";
 import UpdatePermiso from "./pages/Permisos/UpdatePermisos.js";
-import MonitoreoPedido from "./pages/Meseros/MonitoreoPedido";
-import AsignarPedido from "./pages/Meseros/AsignarPedido";
+import MonitoreoPedido from "./pages/Meseros/MonitoreoPedido.js";
+import AsignarPedido from "./pages/Meseros/AsignarPedido.js";
+import ReadAreas from "./pages/Areas/ReadAreas.js";
+import RegistroAreas from "./pages/Areas/RegistroAreas.js";
+import UpdateArea from "./pages/Areas/UpdateArea.js";
+import ReadMesas from "./pages/Mesas/ReadMesas.js";
+import RegistroMesas from "./pages/Mesas/RegistroMesas.js";
+import UpdateMesa from "./pages/Mesas/UpdateMesa.js";
+import ReadClientes from "./pages/clientes/ReadClientes.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -117,6 +124,19 @@ function App() {
               path="/monitoreo-pedido/asignar-pedido"
               element={<AsignarPedido />}
             />
+
+            {/* RUTAS PARA MANTENIMIENTO DE AREAS */}
+            <Route path="/areas" element={<ReadAreas />} />
+            <Route path="/areas/areas-register" element={<RegistroAreas />} />
+            <Route path="/areas/areas-edit" element={<UpdateArea />} />
+
+            {/* RUTAS PARA MANTENIMIENTO DE MESAS */}
+            <Route path="/mesas" element={<ReadMesas />} />
+            <Route path="/mesas/mesas-register" element={<RegistroMesas />} />
+            <Route path="/mesas/mesas-edit" element={<UpdateMesa />} />
+
+            {/* RUTAS PARA MANTENIMIENTO DE CLIENTES */}
+            <Route path="/clientes" element={<ReadClientes />} />
           </>
         )}
 

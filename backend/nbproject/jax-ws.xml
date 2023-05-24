@@ -25,6 +25,9 @@
     <service name="WsClienteNuevo">
       <implementation-class>service.WsClienteNuevo</implementation-class>
     </service>
+    <service name="WSTransaction">
+      <implementation-class>service.WSTransaction</implementation-class>
+    </service>
     <service name="WsPedido">
       <implementation-class>service.WsPedido</implementation-class>
     </service>
@@ -34,4 +37,5 @@
   </services>
   <clients>
   </clients>
+  <jsr109>true</jsr109>
 </jax-ws>

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { fetchAreas } from "../../ServiceSoap/Area/ReadAreaSoap";
 import { fetchMesasAreas } from "../../ServiceSoap/Mesa/ReadMesasAreaSoap";
-import { fetchUpdateMesas } from "../../ServiceSoap/Mesa/UpdateEstadoMesaSoap";
+import { NavLink } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
-
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import "./MonitoreoPedido.css";
 
 const MesasPorArea = () => {
@@ -22,11 +19,11 @@ const MesasPorArea = () => {
         response["S:Envelope"]["S:Body"]["ns2:listarAreasResponse"]["return"];
 
       if (Array.isArray(areasResponse)) {
-        // verificación si areasResponse es un array
         const areasFormatted = areasResponse.map((area) => {
           return {
-            id: area.id,
+            id: area.id._text,
             descripcion: area.descripcion._text,
+            estado: area.estado._text,
           };
         });
         setAreas(areasFormatted);
@@ -36,22 +33,20 @@ const MesasPorArea = () => {
     getAreas();
   }, []);
 
-  //CARGA DE MESAS
+  // CARGA DE MESAS
   const handleAreaClick = async ({ id }) => {
-    console.log("AREA SELECCIONADA:", id);
     setSelectedArea(id);
     try {
-      const response = await fetchMesasAreas(parseInt(id._text));
+      const response = await fetchMesasAreas(parseInt(id));
       if (response) {
         const mesasResponse =
           response["S:Envelope"]["S:Body"]["ns2:listarMesasDeAreaResponse"][
             "return"
           ];
-        console.log("mesasResponse:", mesasResponse);
         let mesasFormatted = Array.isArray(mesasResponse)
           ? mesasResponse.map((mesa) => {
               return {
-                id: mesa.id,
+                id: mesa.id._text,
                 descripcion: mesa.descripcion._text,
                 asientos: mesa.asientos._text,
                 estado: mesa.estado._text,
@@ -59,7 +54,7 @@ const MesasPorArea = () => {
             })
           : [
               {
-                id: mesasResponse.id,
+                id: mesasResponse.id._text,
                 descripcion: mesasResponse.descripcion._text,
                 asientos: mesasResponse.asientos._text,
                 estado: mesasResponse.estado._text,
@@ -72,31 +67,22 @@ const MesasPorArea = () => {
     }
   };
 
-  //CAMBIO DE ESTADO DE LAS MESAS
-  const handleEstadoMesaClick = async ({ id }) => {
-    console.log("MESA SELECCIONADA:", id._text);
-    try {
-      await fetchUpdateMesas(parseInt(id._text));
-      handleAreaClick({ id: selectedArea }); //
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <div>
       <h2 className="text-center mt-4">Monitoreo de Areas:</h2>
       <div className="text-center mt-4">
-        {areas.map((area) => (
-          <Button
-            variant="warning"
-            className="mx-2"
-            key={area.id}
-            onClick={() => handleAreaClick(area)}
-          >
-            {area.descripcion}
-          </Button>
-        ))}
+        {areas
+          .filter((area) => area.estado === "true")
+          .map((area) => (
+            <Button
+              variant="warning"
+              className="mx-2"
+              key={area.id}
+              onClick={() => handleAreaClick(area)}
+            >
+              {area.descripcion}
+            </Button>
+          ))}
       </div>
 
       {selectedArea && (
@@ -112,15 +98,27 @@ const MesasPorArea = () => {
                   mesa.estado !== "false" ? "disponible" : "no-disponible"
                 } mx-2 text-center`}
                 key={mesa.id}
-                onClick={() => handleEstadoMesaClick({ id: mesa.id })}
               >
-                {/* <Link to={`/monitoreo-pedido/asignar-pedido/`}> */}
                 <Card.Body>
-                  <Card.Title>{`ID: ${mesa.id._text} ${mesa.descripcion}`}</Card.Title>
+                  <Card.Title>{`ID: ${mesa.id} ${mesa.descripcion}`}</Card.Title>
                   <Card.Subtitle>{`Estado: ${mesa.estado}`}</Card.Subtitle>
                   <Card.Text>{`Asientos: ${mesa.asientos}`}</Card.Text>
+                  {mesa.estado !== "false" ? (
+                    <NavLink
+                      to={`/monitoreo-pedido/asignar-pedido?id=${mesa.id}`}
+                    >
+                      <Button variant="danger">Registrar Pedido</Button>
+                    </NavLink>
+                  ) : (
+                    <Button
+                      className="no-disponible"
+                      variant="secondary"
+                      disabled
+                    >
+                      Mesa no disponible
+                    </Button>
+                  )}
                 </Card.Body>
-                {/* </Link> */}
               </Card>
             ))}
           </div>

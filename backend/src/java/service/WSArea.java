@@ -25,4 +25,45 @@ public class WSArea {
         return lstAreas;
     }
 
+    //WEBMETHOD --> LISTAR AREA INDIVIDUAL A TRAVES DE SU ID
+    @WebMethod(operationName = "obtenerAreaPorID")
+    public ModelArea obtenerAreaPorID(@WebParam(name = "id") int id) {
+        return daoArea.list(id);
+    }
+
+    //WEBMETHOD --> REGISTRAR AREAS 
+    @WebMethod(operationName = "registrarArea")
+    public boolean registrarArea(
+            @WebParam(name = "DESCRIPCION") String descripcion,
+            @WebParam(name = "ESTADO") boolean estado) {
+
+        area.setDescripcion(descripcion);
+        area.setEstado(estado);
+
+        daoArea.Register(area);
+        return true;
+    }
+
+    //WEBMETHOD --> ACTUALIZAR AREAS
+    @WebMethod(operationName = "actualizarAreas")
+    public boolean actualizarAreas(
+            @WebParam(name = "DESCRIPCION") String descripcion,
+            @WebParam(name = "ESTADO") boolean estado,
+            @WebParam(name = "ID_AREA") int id) {
+
+        area.setDescripcion(descripcion);
+        area.setEstado(estado);
+        area.setId(id);
+
+        boolean cambioExitoso = daoArea.Update(area);
+        return cambioExitoso;
+    }
+
+    //WEBMETHOD --> ELIMINAR AREA POR ID
+    @WebMethod(operationName = "eliminarArea")
+    public boolean eliminarArea(@WebParam(name = "ID") int id) {
+        area.setId(id);
+        return daoArea.Delete(area);
+    }
+
 }

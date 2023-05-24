@@ -72,9 +72,6 @@ function Navigation() {
                     <LinkContainer to="/monitoreo-pedido">
                       <NavDropdown.Item>Mesas</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to="/monitoreo-pedido/asignar-pedido">
-                      <NavDropdown.Item>Asignar Pedido</NavDropdown.Item>
-                    </LinkContainer>
                     <LinkContainer to="/pedidos">
                       <NavDropdown.Item>Pedidos</NavDropdown.Item>
                     </LinkContainer>
@@ -92,6 +89,25 @@ function Navigation() {
           </Nav>
         </Navbar.Collapse>
       </Container>
+
+      {/* Muestra Navbar.Collapse si el usuario es Mesero */}
+      {user?.rol === "Mesero" && (
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <NavDropdown title="Administracion" id="basic-nav-dropdown">
+              <LinkContainer to="/areas">
+                <NavDropdown.Item>Registrar Areas</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/mesas">
+                <NavDropdown.Item>Registrar Mesas</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/clientes">
+                <NavDropdown.Item>Registrar Clientes</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      )}
     </Navbar>
   );
 }

@@ -3,10 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Documentos/ProyectoFinal/ManageSys/backend/src/java/service/WsPedido.java</file>
-            <file>file:/E:/Documentos/ProyectoFinal/ManageSys/backend/src/java/dao/DaoCliente.java</file>
-            <file>file:/E:/Documentos/ProyectoFinal/ManageSys/backend/src/java/service/WsClienteNuevo.java</file>
-            <file>file:/E:/Documentos/ProyectoFinal/ManageSys/backend/src/java/dao/DaoPedido.java</file>
+            <file>file:/Users/josueemilian/Documents/React-Projects/ManageSys/backend/src/java/model/ModelTransaction.java</file>
         </group>
     </open-files>
 </project-private>
