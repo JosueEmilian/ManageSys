@@ -28,6 +28,9 @@
     <service name="WsPedido">
       <implementation-class>service.WsPedido</implementation-class>
     </service>
+    <service name="WsProducto">
+      <implementation-class>service.WsProducto</implementation-class>
+    </service>
   </services>
   <clients>
   </clients>
