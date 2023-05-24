@@ -9,11 +9,13 @@ export const fetchClientes = async () => {
         headers: {
           "Content-Type": "text/xml;charset=UTF-8",
         },
-        body: `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-        <Body>
-            <listarClientes xmlns="http://service/"/>
-        </Body>
-    </Envelope>`,
+        body: `<?xml version="1.0" encoding="UTF-8"?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+        <SOAP-ENV:Header/>
+        <S:Body>
+            <ns2:listarClientes xmlns:ns2="http://service/"/>
+        </S:Body>
+    </S:Envelope>
+    `,
       }
     );
     const data = await response.text();

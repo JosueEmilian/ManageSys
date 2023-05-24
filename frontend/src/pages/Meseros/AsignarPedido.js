@@ -3,6 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import ModalCliente from "../../Components/ModalCliente.js";
+import ModalClienteBusqueda from "../../Components/ModalClienteBusqueda.js";
 import { fetchTransaction } from "../../ServiceSoap/Transaction/TransactionSoap.js";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -40,20 +41,30 @@ function AsignarPedido() {
     setTotal(newTotal);
   };
 
-  // Trabajamos el MODAL para ingreso Cliente
-  const [modalShow, setModalShow] = useState(false);
+  // Trabajamos el MODAL para ingreso Cliente y Busqueda
+  const [modalClienteShow, setModalClienteShow] = useState(false);
+  const [modalClienteSearchShow, setModalClienteSearchShow] = useState(false);
 
   const openModal = () => {
-    setModalShow(true);
+    setModalClienteShow(true);
   };
 
   const closeModal = () => {
-    setModalShow(false);
+    setModalClienteShow(false);
+  };
+
+  const openModalSearch = () => {
+    setModalClienteSearchShow(true);
+  };
+
+  const closeModalSearch = () => {
+    setModalClienteSearchShow(false);
   };
 
   const handleFormSubmit = (formData) => {
     setCliente(formData);
     closeModal();
+    closeModalSearch();
   };
 
   // Fetch para realizar el pedido
@@ -93,7 +104,6 @@ function AsignarPedido() {
     doc.setFontSize(12);
     doc.setTextColor("#000000"); // Color del texto
 
-    // Título
     doc.setFont("helvetica", "bold");
     doc.setFontSize(18);
     doc.text("ManageSys Restaurant", 10, 20);
@@ -105,8 +115,6 @@ function AsignarPedido() {
     doc.text(`Nit: ${cliente.nit}`, 10, 50);
     doc.text(`Razón Social: ${cliente.razon_social}`, 10, 60);
     doc.text(`Nickname: ${cliente.nickname}`, 10, 70);
-    doc.text(`Dirección: ${cliente.direccion}`, 10, 80);
-    doc.text(`Teléfono: ${cliente.telefono}`, 10, 90);
 
     // Información del pedido
     doc.text(`Mesa Numero: ${id}`, 10, 110);
@@ -136,7 +144,15 @@ function AsignarPedido() {
               <Button variant="danger" onClick={openModal} type="button">
                 Asignar Cliente
               </Button>
-              <Modal show={modalShow} onHide={closeModal}>
+              <Button
+                variant="danger"
+                onClick={openModalSearch}
+                type="button"
+                className="ms-3"
+              >
+                Asignar Cliente Existente
+              </Button>
+              <Modal show={modalClienteShow} onHide={closeModal}>
                 <Modal.Header closeButton>
                   <Modal.Title>Datos del cliente</Modal.Title>
                 </Modal.Header>
@@ -145,6 +161,20 @@ function AsignarPedido() {
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={closeModal}>
+                    Cerrar
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+              <Modal show={modalClienteSearchShow} onHide={closeModalSearch}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Datos buscar</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <ModalClienteBusqueda onSubmit={handleFormSubmit} />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={closeModalSearch}>
                     Cerrar
                   </Button>
                 </Modal.Footer>

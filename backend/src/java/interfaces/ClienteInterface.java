@@ -17,4 +17,5 @@ public interface ClienteInterface {
     public boolean insertarCliente(ModeloCliente cliente);
     public boolean modificarCliente(ModeloCliente cliente);
     public boolean eliminarCliente(int idCliente);
+     public List<ModeloCliente> Search(String cliente);
 }

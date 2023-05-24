@@ -30,8 +30,8 @@ public class DaoArea implements AreaInterface {
             strSQL = "SELECT ID_AREA, DESCRIPCION,\n"
                     + "       ESTADO,\n"
                     + "       CASE ESTADO\n"
-                    + "           WHEN 0 THEN 'inactivo'\n"
-                    + "           WHEN 1 THEN 'activo'\n"
+                    + "           WHEN 0 THEN 'No disponible'\n"
+                    + "           WHEN 1 THEN 'Disponible'\n"
                     + "           ELSE 'desconocido'\n"
                     + "       END AS ESTADO_DESCRIPCION\n"
                     + "FROM AREA;";

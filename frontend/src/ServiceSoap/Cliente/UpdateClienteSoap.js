@@ -19,7 +19,7 @@ export const fetchUpdateCliente = async (
         },
         body: `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
-            <actualizarUsuario xmlns="http://service/">
+            <actualizarCliente xmlns="http://service/">
                 <nombre xmlns="">${nombre}</nombre>
                 <nit xmlns="">${nit}</nit>
                 <nickname xmlns="">${nickname}</nickname>
@@ -27,7 +27,7 @@ export const fetchUpdateCliente = async (
                 <telefono xmlns="">${telefono}</telefono>
                 <direccion xmlns="">${direccion}</direccion>
                 <id xmlns="">${id}</id>
-            </actualizarUsuario>
+            </actualizarCliente>
         </Body>
     </Envelope>`,
       }

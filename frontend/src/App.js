@@ -21,7 +21,7 @@ import UpdateModulo from "./pages/Modulo/UpdateModulos.js";
 import ReadPermisos from "./pages/Permisos/ReadPermisos.js";
 import RegistrarPermiso from "./pages/Permisos/RegistroPermisos.js";
 import UpdatePermiso from "./pages/Permisos/UpdatePermisos.js";
-import MonitoreoPedido from "./pages/Meseros/MonitoreoPedido.js";
+import MonitoreoPedido from "./pages/Meseros/MonitoreoAreasMesas.js";
 import AsignarPedido from "./pages/Meseros/AsignarPedido.js";
 import ReadAreas from "./pages/Areas/ReadAreas.js";
 import RegistroAreas from "./pages/Areas/RegistroAreas.js";
@@ -30,6 +30,11 @@ import ReadMesas from "./pages/Mesas/ReadMesas.js";
 import RegistroMesas from "./pages/Mesas/RegistroMesas.js";
 import UpdateMesa from "./pages/Mesas/UpdateMesa.js";
 import ReadClientes from "./pages/clientes/ReadClientes.js";
+import RegistroClientes from "./pages/clientes/RegistroClientes.js";
+import UpdateCliente from "./pages/clientes/UpdateCliente.js";
+import MonitorCocina from "./pages/Meseros/MonitorCocina.js";
+import ProductosRegister from "./pages/ProductoNuevo/productosRegister.js";
+import ReadProductosNuevos from "./pages/ProductoNuevo/ReadProductosNuevo.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -124,6 +129,7 @@ function App() {
               path="/monitoreo-pedido/asignar-pedido"
               element={<AsignarPedido />}
             />
+            <Route path="/monitor-cocina" element={<MonitorCocina />} />
 
             {/* RUTAS PARA MANTENIMIENTO DE AREAS */}
             <Route path="/areas" element={<ReadAreas />} />
@@ -137,6 +143,18 @@ function App() {
 
             {/* RUTAS PARA MANTENIMIENTO DE CLIENTES */}
             <Route path="/clientes" element={<ReadClientes />} />
+            <Route
+              path="/clientes/clientes-register"
+              element={<RegistroClientes />}
+            />
+            <Route path="/clientes/clientes-edit" element={<UpdateCliente />} />
+
+            {/* RUTAS PARA MANTENIMIENTO DE PRODUCTOS */}
+            <Route path="/productos" element={<ReadProductosNuevos />} />
+            <Route
+              path="/productos/productos-register"
+              element={<ProductosRegister />}
+            />
           </>
         )}
 

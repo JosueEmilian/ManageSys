@@ -96,7 +96,7 @@ public class DaoCliente implements ClienteInterface {
     public boolean insertarCliente(ModeloCliente cliente) {
         boolean res = false;
         strSQL = "INSERT INTO cliente (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO, ESTADO) "
-                + "VALUES ((SELECT ISNULL(MAX(ID_CLIENTE), 0) + 1 FROM CLIENTE), ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES ((SELECT ISNULL(MAX(ID_CLIENTE), 0) + 1 FROM CLIENTE), ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection con = conexion.open();
@@ -136,7 +136,7 @@ public class DaoCliente implements ClienteInterface {
             con = conexion.open();
 
             // Se prepara la consulta SQL
-            String sql = "UPDATE CLIENTE SET NOMBRE = ?, NIT = ?, NICKNAME = ?, DIRECCION = ?, RAZON_SOCIAL = ?, TELEFONO = ? WHERE ID_USUARIO = ?";
+            String sql = "UPDATE CLIENTE SET NOMBRE = ?, NIT = ?, NICKNAME = ?, DIRECCION = ?, RAZON_SOCIAL = ?, TELEFONO = ? WHERE ID_CLIENTE = ?";
             pst = con.prepareStatement(sql);
             pst.setString(1, cliente.getNombre());
             pst.setString(2, cliente.getNit());
@@ -191,5 +191,45 @@ public class DaoCliente implements ClienteInterface {
                 System.out.println("Error al eliminar usuario (cerrando conexión): " + e.getMessage());
             }
         }
+    }
+
+    @Override
+    public List<ModeloCliente> Search(String cliente) {
+        List<ModeloCliente> lst = new ArrayList<>();
+        try {
+            strSQL = "SELECT * FROM CLIENTE WHERE NIT = ?";
+            Connection con = conexion.open();
+            PreparedStatement pst = con.prepareStatement(strSQL);
+
+            pst.setString(1, cliente);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                ModeloCliente nCliente = new ModeloCliente();
+                nCliente.setIdCliente(rs.getInt("ID_CLIENTE"));
+                nCliente.setNombre(rs.getString("NOMBRE"));
+                nCliente.setNit(rs.getString("NIT"));
+                nCliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                nCliente.setNickname(rs.getString("NICKNAME"));
+                nCliente.setTelefono(rs.getString("TELEFONO"));
+                lst.add(nCliente);
+            }
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                conexion.close();
+            } catch (Exception ex) {
+                Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return lst;
     }
 }

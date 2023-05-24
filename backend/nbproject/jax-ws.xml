@@ -31,6 +31,12 @@
     <service name="WsPedido">
       <implementation-class>service.WsPedido</implementation-class>
     </service>
+    <service name="WSMonitorCocina">
+      <implementation-class>service.WSMonitorCocina</implementation-class>
+    </service>
+    <service name="WSProductoNuevo">
+      <implementation-class>service.WSProductoNuevo</implementation-class>
+    </service>
   </services>
   <clients>
   </clients>

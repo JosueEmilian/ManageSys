@@ -72,8 +72,8 @@ function Navigation() {
                     <LinkContainer to="/monitoreo-pedido">
                       <NavDropdown.Item>Mesas</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to="/pedidos">
-                      <NavDropdown.Item>Pedidos</NavDropdown.Item>
+                    <LinkContainer to="/monitor-cocina">
+                      <NavDropdown.Item>Monitor Cocina</NavDropdown.Item>
                     </LinkContainer>
                   </>
                 )}
@@ -103,6 +103,9 @@ function Navigation() {
               </LinkContainer>
               <LinkContainer to="/clientes">
                 <NavDropdown.Item>Registrar Clientes</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/productos">
+                <NavDropdown.Item>Registrar Productos</NavDropdown.Item>
               </LinkContainer>
             </NavDropdown>
           </Nav>

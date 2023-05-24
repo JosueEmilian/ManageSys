@@ -4,57 +4,45 @@ import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { fetchClientes } from "../../ServiceSoap/Cliente/ReadClienteSoap.js";
-import { fetchDeleteCliente } from "../../ServiceSoap/Cliente/DeleteClienteIDSoap.js";
+import { fetchProductosNuevo } from "../../ServiceSoap/ProductoNuevo/ReadProductosNuevo.js";
+import "./ProductoNuevo.css";
+import { fetchDeleteMesa } from "../../ServiceSoap/Mesa/DeleteMesaIDSoap.js";
 
-function ReadClientes() {
-  // CARGA DE CLIENTES
-  const [clientes, setClientes] = useState([]);
+function ReadProductosNuevos() {
+  // CARGA DE PRODUCTOS
+  const [productos, setProductos] = useState([]);
   useEffect(() => {
-    const getClientes = async () => {
-      const response = await fetchClientes();
-      const clientesResponse =
-        response["S:Envelope"]["S:Body"]["ns2:listarClientesResponse"][
+    const getProductos = async () => {
+      const response = await fetchProductosNuevo();
+      const productosResponse =
+        response["S:Envelope"]["S:Body"]["ns2:listarProductosNuevoResponse"][
           "return"
         ];
 
-      const formatCliente = (cliente) => ({
-        id: cliente.idCliente._text,
-        nombre: cliente.nombre._text,
-        nickname: cliente.nickname._text,
-        nit: cliente.nit._text,
-        razonSocial: cliente.razonSocial._text,
-        telefono: cliente.telefono._text,
+      const formatProducto = (producto) => ({
+        id: producto.id._text,
+        descripcion: producto.descripcion._text,
+        imgUrl: producto.img._text,
+        precio: producto.precio._text,
       });
 
-      const clientesFormatted = Array.isArray(clientesResponse)
-        ? clientesResponse.map(formatCliente)
-        : [formatCliente(clientesResponse)];
+      const productosFormatted = Array.isArray(productosResponse)
+        ? productosResponse.map(formatProducto)
+        : [formatProducto(productosResponse)];
 
-      setClientes(clientesFormatted);
+      setProductos(productosFormatted);
     };
 
-    getClientes();
+    getProductos();
   }, []);
-
-  //funcion para eliminar Cliente
-  async function handleDelete(id) {
-    const response = await fetchDeleteCliente(id);
-    if (response) {
-      alert("Cliente eliminado correctamente");
-      window.location.reload();
-    } else {
-      // manejar el error
-    }
-  }
 
   return (
     <div className="table-principal ">
-      <h1 className="text-center">Clientes</h1>
+      <h1 className="text-center">Registro de Mesas</h1>
 
       <div className="text-center mt-4">
         <NavLink
-          to="/clientes/clientes-register"
+          to="/productos/productos-register"
           className="btn btn-warning text-white"
         >
           <FontAwesomeIcon
@@ -74,11 +62,11 @@ function ReadClientes() {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Buscar cliente</Form.Label>
+          <Form.Label>Buscar Mesa</Form.Label>
           <FormControl
             type="search"
             style={{ width: "200px" }}
-            placeholder="Ingrese el cliente"
+            placeholder="Ingrese el area"
           />
         </Form.Group>
         <button type="button" className="btn btn-warning mx-3">
@@ -89,40 +77,42 @@ function ReadClientes() {
         <thead className="text-center">
           <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Nickname</th>
-            <th>Nit</th>
-            <th>Razon Social</th>
-            <th>Telefono</th>
+            <th>Descripcion</th>
+            <th>Imagen</th>
+            <th>Precio</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody className="text-center">
-          {clientes.map((cliente) => (
-            <tr key={cliente.id}>
-              <td>{cliente.id}</td>
-              <td>{cliente.nombre}</td>
-              <td>{cliente.nickname}</td>
+          {productos.map((producto) => (
+            <tr key={producto.id}>
+              <td>{producto.id}</td>
+              <td>{producto.descripcion}</td>
               <td>
-                {" "}
+                <img
+                  src={producto.imgUrl}
+                  alt="Producto"
+                  className="img-producto"
+                />
+              </td>
+
+              <td>
                 <Badge bg="danger" pill>
-                  {cliente.nit}
+                  {producto.precio}
                 </Badge>
               </td>
-              <td>{cliente.razonSocial}</td>
-              <td>{cliente.telefono}</td>
 
               <td>
                 <button
                   type="button"
                   className="btn btn-outline-danger mx-3"
-                  onClick={() => handleDelete(cliente.id)}
+                  //   onClick={() => handleDelete(producto.id)}
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
 
                 <NavLink
-                  to={`/clientes/clientes-edit?id=${cliente.id}`}
+                  to={`/mesas/mesas-edit?id=${producto.id}`}
                   className="btn btn-warning text-white"
                 >
                   <FontAwesomeIcon
@@ -140,4 +130,4 @@ function ReadClientes() {
   );
 }
 
-export default ReadClientes;
+export default ReadProductosNuevos;
