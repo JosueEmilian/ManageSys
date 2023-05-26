@@ -247,5 +247,5 @@ public class ModelTransaction {
         this.fechaDetalle = fechaDetalle;
     }
 
-    
+   
 }

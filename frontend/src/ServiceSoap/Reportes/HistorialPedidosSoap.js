@@ -1,9 +1,9 @@
 import xml2js from "xml-js";
 
-export const fetchProductosNuevo = async () => {
+export const fetchHistorialPedidos = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8080/backend/WsProducto?WSDL",
+      "http://localhost:8080/backend/WSReporte?WSDL",
       {
         method: "POST",
         headers: {
@@ -11,7 +11,7 @@ export const fetchProductosNuevo = async () => {
         },
         body: `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
-            <getProductos xmlns="http://service/"/>
+            <historialPedidos xmlns="http://service/"/>
         </Body>
     </Envelope>`,
       }

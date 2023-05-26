@@ -40,7 +40,6 @@ function MonitorCocina() {
   async function handleDespachar(id) {
     const response = await fetchUpdateEstadoPedido(id);
     if (response) {
-      alert("Pedido despachado");
       window.location.reload();
     } else {
       // manejar el error

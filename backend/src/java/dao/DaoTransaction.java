@@ -113,9 +113,9 @@ public class DaoTransaction implements TransactionInterface {
             pst.setInt(3, transaction.getCantidadDetalle());
             pst.setDouble(4, transaction.getPrecioDetalle());
             pst.setDouble(5, transaction.getTotalLineaDetalle());
-            pst.setString(6, transaction.getObservacionDetalle());
-            pst.setBoolean(7, transaction.isEstadoDetalle());
-            pst.executeUpdate();
+                pst.setString(6, transaction.getObservacionDetalle());
+                pst.setBoolean(7, transaction.isEstadoDetalle());
+                pst.executeUpdate();
             pst.close();
 
             // Acutalizamos el campo TOTAL en la tabla PEDIDO

@@ -25,20 +25,20 @@
     <service name="WsClienteNuevo">
       <implementation-class>service.WsClienteNuevo</implementation-class>
     </service>
-    <service name="WSTransaction">
-      <implementation-class>service.WSTransaction</implementation-class>
-    </service>
     <service name="WsPedido">
       <implementation-class>service.WsPedido</implementation-class>
     </service>
     <service name="WSMonitorCocina">
       <implementation-class>service.WSMonitorCocina</implementation-class>
     </service>
-    <service name="WSProductoNuevo">
-      <implementation-class>service.WSProductoNuevo</implementation-class>
-    </service>
     <service name="WsProducto">
       <implementation-class>service.WsProducto</implementation-class>
+    </service>
+    <service name="WSReporte">
+      <implementation-class>service.WSReporte</implementation-class>
+    </service>
+    <service name="WSTransaction">
+      <implementation-class>service.WSTransaction</implementation-class>
     </service>
   </services>
   <clients>

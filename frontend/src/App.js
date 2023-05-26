@@ -35,6 +35,8 @@ import UpdateCliente from "./pages/clientes/UpdateCliente.js";
 import MonitorCocina from "./pages/Meseros/MonitorCocina.js";
 import ProductosRegister from "./pages/ProductoNuevo/productosRegister.js";
 import ReadProductosNuevos from "./pages/ProductoNuevo/ReadProductosNuevo.js";
+import ActualizarProductos from "./pages/ProductoNuevo/UpdateProducto.js";
+import ReporteHistorialPedidos from "./pages/Reportes/ReadHistorialPedidos.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -130,6 +132,10 @@ function App() {
               element={<AsignarPedido />}
             />
             <Route path="/monitor-cocina" element={<MonitorCocina />} />
+            <Route
+              path="/historial-pedidos"
+              element={<ReporteHistorialPedidos />}
+            />
 
             {/* RUTAS PARA MANTENIMIENTO DE AREAS */}
             <Route path="/areas" element={<ReadAreas />} />
@@ -154,6 +160,10 @@ function App() {
             <Route
               path="/productos/productos-register"
               element={<ProductosRegister />}
+            />
+            <Route
+              path="/productos/productos-edit"
+              element={<ActualizarProductos />}
             />
           </>
         )}

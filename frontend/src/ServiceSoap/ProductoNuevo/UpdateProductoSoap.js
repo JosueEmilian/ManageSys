@@ -1,6 +1,7 @@
 import xml2js from "xml-js";
 
-export const fetchRegisterProductoNuevo = async (
+export const fetchUpdateProducto = async (
+  id,
   idTipo,
   descripcion,
   precio,
@@ -17,13 +18,14 @@ export const fetchRegisterProductoNuevo = async (
         },
         body: `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
-            <insertarProducto xmlns="http://service/">
+            <modificarProducto xmlns="http://service/">
+                <idCombo xmlns="">${id}</idCombo>
                 <idTipo xmlns="">${idTipo}</idTipo>
                 <descripcion xmlns="">${descripcion}</descripcion>
                 <precio xmlns="">${precio}</precio>
                 <estado xmlns="">${estado}</estado>
                 <imagen xmlns="">${imagen}</imagen>
-            </insertarProducto>
+            </modificarProducto>
         </Body>
     </Envelope>`,
       }

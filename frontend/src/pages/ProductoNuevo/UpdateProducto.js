@@ -1,37 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ProductoNuevo.css";
-import { fetchRegisterProductoNuevo } from "../../ServiceSoap/ProductoNuevo/RegisterProductoNuevo.js";
+import { fetchProductoID } from "../../ServiceSoap/ProductoNuevo/GetProductoIDSoap.js";
+import { fetchUpdateProducto } from "../../ServiceSoap/ProductoNuevo/UpdateProductoSoap.js";
 
-export default function RegistrarProductos() {
+export default function ActualizarProductos() {
   const [images, setImages] = useState([]);
   const navigate = useNavigate();
 
-  //Variables de registro produtos
+  //Variables de registro productos
   const [idTipo, setIdTipo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState("");
   const [estado, setEstado] = useState("");
+
+  // Recuperamos ID SELECCIONADO y mostramos sus datos en los inputs
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get("id");
+
+  // CARGA DE DATA PRODUCTO
+  const [productosData, setProductosData] = useState({});
+  const mapeoDatos = {
+    idTipo: setIdTipo,
+    descripcion: setDescripcion,
+    precio: setPrecio,
+    estado: setEstado,
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchProductoID(id);
+        const productosResponse =
+          response["S:Envelope"]["S:Body"]["ns2:getInfoProductoResponse"][
+            "return"
+          ];
+        setProductosData(productosResponse);
+
+        Object.entries(mapeoDatos).forEach(([field, setter]) => {
+          if (productosResponse[field]?._text) {
+            setter(productosResponse[field]._text);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const imagen = images[0]?.url; // obtenemos la url de la imagen
 
-      await fetchRegisterProductoNuevo(
+      await fetchUpdateProducto(
+        id,
         idTipo,
         descripcion,
         precio,
         estado,
         imagen
       );
-      alert("Producto registrado exitosamente!");
+      alert("Producto actualizado exitosamente!");
       navigate("/productos");
     } catch (error) {
       console.error(error);
-      alert("Hubo un error al registrar el producto");
+      alert("Hubo un error al actualizar el producto");
     }
   };
 
@@ -70,9 +109,9 @@ export default function RegistrarProductos() {
                     </div>
                   </div>
                   <div className="card-body p-lg-5">
-                    <h3 className="mb-4">Registrar Productos! 🍴 </h3>
+                    <h3 className="mb-4">Actualizacion de Productos! 🍴 </h3>
                     <p className="text-muted text-sm mb-5">
-                      Registro de productos
+                      Actualizacion de productos
                     </p>
                     <form onSubmit={handleSubmit}>
                       <div className="form-floating mb-3">
@@ -150,7 +189,6 @@ export default function RegistrarProductos() {
                           />
                         ))}
                       </div>
-
                       <div className="mt-3 align-item-center justify-content-center form-group row">
                         <button className="btn btn-warning " type="submit">
                           Ingresar
