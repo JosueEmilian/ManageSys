@@ -8,7 +8,7 @@ import config.ConnectionDB;
 import interfaces.ClienteInterface;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet; 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +21,22 @@ import model.ModeloCliente;
  * @author abner
  */
 public class DaoCliente implements ClienteInterface {
+
     ConnectionDB conexion = new ConnectionDB();
     ModeloCliente usr = new ModeloCliente();
     String strSQL = "";
     ResultSet rs = null;
-    
-    
+
     @Override
     public List<ModeloCliente> clientes() {
         ArrayList<ModeloCliente> lsClientes = new ArrayList<>();
         try {
-            strSQL = "select * from cliente ";
+            strSQL = "select * from cliente where estado = 1 or estado is null ";
             conexion.open();
             rs = conexion.executeQuery(strSQL);
 
             while (rs.next()) {
-                ModeloCliente cliente = new ModeloCliente(); 
+                ModeloCliente cliente = new ModeloCliente();
                 cliente.setIdCliente(rs.getInt("ID_CLIENTE"));
                 cliente.setNombre(rs.getString("NOMBRE"));
                 cliente.setNit(rs.getString("NIT"));
@@ -45,7 +45,7 @@ public class DaoCliente implements ClienteInterface {
                 cliente.setTelefono(rs.getString("TELEFONO"));
                 lsClientes.add(cliente);
             }
-            
+
             rs.close();
             conexion.close();
 
@@ -56,14 +56,13 @@ public class DaoCliente implements ClienteInterface {
         }
         return lsClientes;
     }
- 
 
     @Override
     public ModeloCliente infoCliente(int id) {
         try {
             strSQL = "SELECT * \n"
-                    + "FROM USUARIO \n"
-                    + "WHERE ID_USUARIO = ?";
+                    + "FROM CLIENTE \n"
+                    + "WHERE ID_CLIENTE = ?";
 
             Connection con = conexion.open();
             PreparedStatement pst = con.prepareStatement(strSQL);
@@ -71,13 +70,14 @@ public class DaoCliente implements ClienteInterface {
             rs = pst.executeQuery();
 
             while (rs.next()) {
-                usr.setIdCliente(rs.getInt("ID_USUARIO"));
+                usr.setIdCliente(rs.getInt("ID_CLIENTE"));
                 usr.setNombre(rs.getString("NOMBRE"));
                 usr.setNit(rs.getString("NIT"));
                 usr.setNickname(rs.getString("NICKNAME"));
                 usr.setDireccion(rs.getString("DIRECCION"));
                 usr.setTelefono(rs.getString("TELEFONO"));
-                usr.setRazonSocial(rs.getString("RAZON_SOCIAL")); 
+                usr.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                usr.setEstado(rs.getInt("ESTADO"));
             }
             rs.close();
             pst.close();
@@ -95,7 +95,7 @@ public class DaoCliente implements ClienteInterface {
     @Override
     public boolean insertarCliente(ModeloCliente cliente) {
         boolean res = false;
-        strSQL = "INSERT INTO cliente (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO) "
+        strSQL = "INSERT INTO cliente (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO, ESTADO) "
                 + "VALUES ((SELECT ISNULL(MAX(ID_CLIENTE), 0) + 1 FROM CLIENTE), ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -106,7 +106,8 @@ public class DaoCliente implements ClienteInterface {
             pst.setString(3, cliente.getRazonSocial());
             pst.setString(4, cliente.getNickname());
             pst.setString(5, cliente.getDireccion());
-            pst.setString(6, cliente.getTelefono()); 
+            pst.setString(6, cliente.getTelefono());
+            pst.setInt(7, cliente.getEstado());
 
             int result = pst.executeUpdate();
 
@@ -135,7 +136,7 @@ public class DaoCliente implements ClienteInterface {
             con = conexion.open();
 
             // Se prepara la consulta SQL
-                String sql = "UPDATE CLIENTE SET NOMBRE = ?, NIT = ?, NICKNAME = ?, DIRECCION = ?, RAZON_SOCIAL = ?, TELEFONO = ? WHERE ID_USUARIO = ?";
+            String sql = "UPDATE CLIENTE SET NOMBRE = ?, NIT = ?, NICKNAME = ?, DIRECCION = ?, RAZON_SOCIAL = ?, TELEFONO = ? WHERE ID_CLIENTE = ?";
             pst = con.prepareStatement(sql);
             pst.setString(1, cliente.getNombre());
             pst.setString(2, cliente.getNit());
@@ -143,7 +144,7 @@ public class DaoCliente implements ClienteInterface {
             pst.setString(4, cliente.getDireccion());
             pst.setString(5, cliente.getRazonSocial());
             pst.setString(6, cliente.getTelefono());
-            pst.setInt(7, cliente.getIdCliente()); 
+            pst.setInt(7, cliente.getIdCliente());
 
             // Se ejecuta la consulta y se obtiene el resultado
             int resultado = pst.executeUpdate();
@@ -169,5 +170,66 @@ public class DaoCliente implements ClienteInterface {
 
         return cambioExitoso;
 
+    }
+
+    @Override
+    public boolean eliminarCliente(int idCliente) {
+        try {
+            strSQL = "UPDATE CLIENTE SET ESTADO = 0 WHERE ID_CLIENTE = ? ";
+            Connection con = conexion.open();
+            PreparedStatement pst = con.prepareStatement(strSQL);
+            pst.setInt(1, idCliente);
+            int result = pst.executeUpdate();
+            return (result > 0);
+        } catch (Exception e) {
+            System.out.println("Error en Delete usuario: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                conexion.close();
+            } catch (Exception e) {
+                System.out.println("Error al eliminar usuario (cerrando conexión): " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public List<ModeloCliente> Search(String cliente) {
+        List<ModeloCliente> lst = new ArrayList<>();
+        try {
+            strSQL = "SELECT * FROM CLIENTE WHERE NIT = ?";
+            Connection con = conexion.open();
+            PreparedStatement pst = con.prepareStatement(strSQL);
+
+            pst.setString(1, cliente);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                ModeloCliente nCliente = new ModeloCliente();
+                nCliente.setIdCliente(rs.getInt("ID_CLIENTE"));
+                nCliente.setNombre(rs.getString("NOMBRE"));
+                nCliente.setNit(rs.getString("NIT"));
+                nCliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                nCliente.setNickname(rs.getString("NICKNAME"));
+                nCliente.setTelefono(rs.getString("TELEFONO"));
+                lst.add(nCliente);
+            }
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                conexion.close();
+            } catch (Exception ex) {
+                Logger.getLogger(DaoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return lst;
     }
 }

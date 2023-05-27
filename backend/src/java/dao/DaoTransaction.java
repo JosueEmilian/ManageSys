@@ -26,7 +26,7 @@ public class DaoTransaction implements TransactionInterface {
 
         try {
             con = conexion.open();
-            con.setAutoCommit(false);  // Desactivamos el modo de confirmación automática
+            con.setAutoCommit(false);  //Desactivar
 
             // Obtenemos el ID_CLIENTE máximo actual
             String selectMaxClientIdQuery = "SELECT ISNULL(MAX(ID_CLIENTE), 0) FROM CLIENTE";
@@ -38,26 +38,42 @@ public class DaoTransaction implements TransactionInterface {
             }
             pst.close();
 
-            // Generamos el nuevo ID_CLIENTE sumando 1 al máximo actual
+            // Generamos el nuevo ID_CLIENTE sumandole 1 al máximo actual
             int generatedClientId = maxClientId + 1;
 
-            // Insertamos el cliente en la tabla CLIENTE
-            String insertClienteQuery = "INSERT INTO CLIENTE (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            pst = con.prepareStatement(insertClienteQuery);
-            pst.setInt(1, generatedClientId);
-            pst.setString(2, transaction.getNombreCliente());
-            pst.setString(3, transaction.getNitCliente());
-            pst.setString(4, transaction.getRazonSocialCliente());
-            pst.setString(5, transaction.getNicknameCliente());
-            pst.setString(6, transaction.getDireccionCliente());
-            pst.setString(7, transaction.getTelefonoCliente());
-            pst.executeUpdate();
-            pst.close();
+            // Antes de insertar el cliente verificamos si ya existe
+            String selectClienteQuery = "SELECT ID_CLIENTE FROM CLIENTE WHERE NIT = ?";
+            pst = con.prepareStatement(selectClienteQuery);
+            pst.setString(1, transaction.getNitCliente());
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                // El cliente ya existe, utiliza el ID_CLIENTE existente
+                generatedClientId = rs.getInt("ID_CLIENTE");
+                System.out.println("El cliente ya existe con el ID: " + generatedClientId);
+            } else {
+                // Si el cliente no existe entonces generamos su nuevo ID_CLIENTE
+                generatedClientId = maxClientId + 1;
+                System.out.println("El cliente no existe, generando nuevo ID: " + generatedClientId);
+
+                //
+                String insertClienteQuery = "INSERT INTO CLIENTE (ID_CLIENTE, NOMBRE, NIT, RAZON_SOCIAL, NICKNAME, DIRECCION, TELEFONO, ESTADO) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+                pst = con.prepareStatement(insertClienteQuery);
+                pst.setInt(1, generatedClientId);
+                pst.setString(2, transaction.getNombreCliente());
+                pst.setString(3, transaction.getNitCliente());
+                pst.setString(4, transaction.getRazonSocialCliente());
+                pst.setString(5, transaction.getNicknameCliente());
+                pst.setString(6, transaction.getDireccionCliente());
+                pst.setString(7, transaction.getTelefonoCliente());
+                pst.executeUpdate();
+                pst.close();
+
+                System.out.println("El id del cliente es: " + generatedClientId);
+            }
 
             System.out.println("El id del cliente es: " + generatedClientId);
 
-            
             // Obtenemos el ID_PEDIDO máximo actual
             String selectMaxPedidoIdQuery = "SELECT ISNULL(MAX(ID_PEDIDO), 0) FROM PEDIDO";
             pst = con.prepareStatement(selectMaxPedidoIdQuery);
@@ -68,14 +84,14 @@ public class DaoTransaction implements TransactionInterface {
             }
             pst.close();
 
-            // Generamos el nuevo ID_CLIENTE sumando 1 al máximo actual
+            // Generamos el nuevo ID_PEDIDO sumando 1 al máximo actual
             int generatedPedidoId = maxPedidoId + 1;
 
             System.out.println("El id_Pedido es: " + generatedPedidoId);
 
             // Insertamos el registro en la tabla PEDIDO
             String insertPedidoQuery = "INSERT INTO PEDIDO (ID_PEDIDO, ID_MESA, ID_EMPLEADO, ID_CLIENTE, OBSERVACION, ESTADO, FECHA_CREA) "
-                    + "VALUES (?, ?, ?, ?, ?, 1, GETDATE())";
+                    + "VALUES (?, ?, ?, ?, ?, 1, SWITCHOFFSET(SYSDATETIME(), '-06:00'))";
 
             pst = con.prepareStatement(insertPedidoQuery, Statement.RETURN_GENERATED_KEYS);
 
@@ -90,15 +106,16 @@ public class DaoTransaction implements TransactionInterface {
 
             // Insertar los registros en la tabla DETALLE_PEDIDO
             String insertDetallePedidoQuery = "INSERT INTO DETALLE_PEDIDO (ID_DETALLE_PEDIDO, ID_PEDIDO, ID_COMBO, CANTIDAD, PRECIO, TOTAL_LINEA, OBSERVACION, ESTADO, FECHA_CREA) "
-                    + "VALUES ((SELECT ISNULL(MAX(ID_DETALLE_PEDIDO), 0) + 1 FROM DETALLE_PEDIDO), ?, ?, ?, ?, ?, ?, 1, GETDATE())";
+                    + "VALUES ((SELECT ISNULL(MAX(ID_DETALLE_PEDIDO), 0) + 1 FROM DETALLE_PEDIDO), ?, ?, ?, ?, ?, ?, ?, GETDATE())";
             pst = con.prepareStatement(insertDetallePedidoQuery);
             pst.setInt(1, generatedPedidoId); //Usamos el ID_PEDIDO generado automáticamente
             pst.setInt(2, transaction.getIdCombo());
             pst.setInt(3, transaction.getCantidadDetalle());
             pst.setDouble(4, transaction.getPrecioDetalle());
             pst.setDouble(5, transaction.getTotalLineaDetalle());
-            pst.setString(6, transaction.getObservacionDetalle());
-            pst.executeUpdate();
+                pst.setString(6, transaction.getObservacionDetalle());
+                pst.setBoolean(7, transaction.isEstadoDetalle());
+                pst.executeUpdate();
             pst.close();
 
             // Acutalizamos el campo TOTAL en la tabla PEDIDO

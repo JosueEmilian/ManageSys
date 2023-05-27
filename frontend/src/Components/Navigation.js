@@ -25,8 +25,8 @@ function Navigation() {
           <Navbar.Brand>MANAGE SYS</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+          <Nav>
             {/* Si no existe usuario */}
             {!user?.usuario && (
               <LinkContainer to="/login">
@@ -72,8 +72,8 @@ function Navigation() {
                     <LinkContainer to="/monitoreo-pedido">
                       <NavDropdown.Item>Mesas</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to="/pedidos">
-                      <NavDropdown.Item>Pedidos</NavDropdown.Item>
+                    <LinkContainer to="/monitor-cocina">
+                      <NavDropdown.Item>Monitor Cocina</NavDropdown.Item>
                     </LinkContainer>
                   </>
                 )}
@@ -86,25 +86,34 @@ function Navigation() {
                 </div>
               </NavDropdown>
             )}
+
+            {/* Muestra Navbar.Collapse si el usuario es Mesero */}
+            {user?.rol === "Mesero" && (
+              <NavDropdown title="Administracion" id="basic-nav-dropdown">
+                <LinkContainer to="/areas">
+                  <NavDropdown.Item>Registrar Areas</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/mesas">
+                  <NavDropdown.Item>Registrar Mesas</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/clientes">
+                  <NavDropdown.Item>Registrar Clientes</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/productos">
+                  <NavDropdown.Item>Registrar Productos</NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+            )}
+            {user?.rol === "Mesero" && (
+              <NavDropdown title="Otros" id="basic-nav-dropdown">
+                <LinkContainer to="/historial-pedidos">
+                  <NavDropdown.Item>Historial de Pedidos</NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
-
-      {/* Muestra Navbar.Collapse si el usuario es Mesero */}
-      {user?.rol === "Mesero" && (
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <NavDropdown title="Administracion" id="basic-nav-dropdown">
-              <LinkContainer to="/areas">
-                <NavDropdown.Item>Registrar Areas</NavDropdown.Item>
-              </LinkContainer>
-              <LinkContainer to="/mesas">
-                <NavDropdown.Item>Registrar Mesas</NavDropdown.Item>
-              </LinkContainer>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      )}
     </Navbar>
   );
 }

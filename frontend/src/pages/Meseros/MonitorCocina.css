@@ -1,0 +1,53 @@
+/* MonitorCocina.css */
+.monitor-card {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+  
+  .monitor-header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .order-item {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .order-item:hover {
+    transform: translate3d(0, -5px, 0);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .order-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .custom-badge {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+  
+  .despachar-button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+  
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  ul li {
+    margin-bottom: 5px;
+  }
+  

@@ -68,15 +68,15 @@ const MesasPorArea = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-center mt-4">Monitoreo de Areas:</h2>
-      <div className="text-center mt-4">
+    <div className="area-interface">
+      <h2 className="title">Monitoreo de Áreas:</h2>
+      <div className="area-container">
         {areas
           .filter((area) => area.estado === "true")
           .map((area) => (
             <Button
               variant="warning"
-              className="mx-2"
+              className="area-button"
               key={area.id}
               onClick={() => handleAreaClick(area)}
             >
@@ -87,32 +87,40 @@ const MesasPorArea = () => {
 
       {selectedArea && (
         <div>
-          <h3 className="text-center mt-4">
+          <h3 className="selected-area">
             Mesas en el{" "}
             {areas.find((area) => area.id === selectedArea).descripcion}
           </h3>
-          <div className="d-flex justify-content-center">
+          <div className="mesa-container">
             {mesas.map((mesa) => (
               <Card
-                className={`mesa ${
+                className={`mesa-card ${
                   mesa.estado !== "false" ? "disponible" : "no-disponible"
-                } mx-2 text-center`}
+                }`}
                 key={mesa.id}
               >
                 <Card.Body>
-                  <Card.Title>{`ID: ${mesa.id} ${mesa.descripcion}`}</Card.Title>
-                  <Card.Subtitle>{`Estado: ${mesa.estado}`}</Card.Subtitle>
+                  <Card.Title className="title-desc">{`${mesa.descripcion}`}</Card.Title>
+                  <Card.Text className="title-desc-estado">{`${
+                    mesa.estado !== "false" ? "Disponible" : "Ocupada"
+                  }`}</Card.Text>
                   <Card.Text>{`Asientos: ${mesa.asientos}`}</Card.Text>
+
                   {mesa.estado !== "false" ? (
                     <NavLink
                       to={`/monitoreo-pedido/asignar-pedido?id=${mesa.id}`}
                     >
-                      <Button variant="danger">Registrar Pedido</Button>
+                      <Button
+                        variant="danger"
+                        className="registrar-pedido-button"
+                      >
+                        Registrar Pedido
+                      </Button>
                     </NavLink>
                   ) : (
                     <Button
-                      className="no-disponible"
-                      variant="secondary"
+                      variant="danger"
+                      className="registrar-pedido-button"
                       disabled
                     >
                       Mesa no disponible

@@ -1,4 +1,3 @@
-
 package service;
 
 import dao.DaoCliente;
@@ -17,21 +16,19 @@ public class WsClienteNuevo {
 
     DaoCliente daoCliente = new DaoCliente();
     ModeloCliente modeloCliente = new ModeloCliente();
-    
+
     @WebMethod(operationName = "listarClientes")
     public List<ModeloCliente> listar() { //@WebParam(name = "name") String txt
         List<ModeloCliente> listaClientes;
         listaClientes = daoCliente.clientes();
         return listaClientes;
     }
-    
-    
-    @WebMethod(operationName = "getUsuarioId")
-    public ModeloCliente obtenerCliente(@WebParam(name = "id") int id){
+
+    @WebMethod(operationName = "getClienteId")
+    public ModeloCliente obtenerCliente(@WebParam(name = "id") int id) {
         return daoCliente.infoCliente(id);
     }
-    
-    
+
     @WebMethod(operationName = "insertarCliente")
     public boolean registrarCliente(
             @WebParam(name = "nombre") String nombre,
@@ -48,12 +45,12 @@ public class WsClienteNuevo {
         modeloCliente.setNickname(nickname);
         modeloCliente.setDireccion(direccion);
         modeloCliente.setTelefono(telefono);
+        modeloCliente.setEstado(1);
         boolean respuesta = daoCliente.insertarCliente(modeloCliente);
         return respuesta;
-    } 
-    
-    
-    @WebMethod(operationName = "actualizarUsuario")
+    }
+
+    @WebMethod(operationName = "actualizarCliente")
     public boolean actualizarCliente(
             @WebParam(name = "nombre") String nombre,
             @WebParam(name = "nit") String nit,
@@ -68,11 +65,23 @@ public class WsClienteNuevo {
         modeloCliente.setNickname(nickname);
         modeloCliente.setDireccion(direccion);
         modeloCliente.setRazonSocial(razon);
-        modeloCliente.setTelefono(telefono); 
+        modeloCliente.setTelefono(telefono);
         modeloCliente.setIdCliente(id);
 
         boolean cambioExitoso = daoCliente.modificarCliente(modeloCliente);
         return cambioExitoso;
     }
-    
+
+    @WebMethod(operationName = "eliminarCliente")
+    public boolean eliminarCliente(@WebParam(name = "id") int id) {
+        return daoCliente.eliminarCliente(id);
+    }
+
+    //WEBMETHOD --> BUSCAR CLIENTE POR NIT
+    @WebMethod(operationName = "buscarCliente")
+    public List<ModeloCliente> buscarCliente(String rol) {
+        List<ModeloCliente> lstClientes;
+        lstClientes = daoCliente.Search(rol);
+        return lstClientes;
+    }
 }

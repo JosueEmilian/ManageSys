@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import ModalCliente from "../../Components/ModalCliente.js";
+import ModalClienteBusqueda from "../../Components/ModalClienteBusqueda.js";
+import ModalProducto from "../../Components/ModalProducto.js";
+import { fetchProductosNuevo } from "../../ServiceSoap/ProductoNuevo/ReadProductosNuevo.js";
 import { fetchTransaction } from "../../ServiceSoap/Transaction/TransactionSoap.js";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -21,8 +24,10 @@ function AsignarPedido() {
   const [observacion, setObservacion] = useState("");
   const [total, setTotal] = useState("");
   const [producto, setProducto] = useState("");
+  const [productos, setProductos] = useState([]);
   const [cantidad, setCantidad] = useState("");
   const [precio, setPrecio] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null); // para precio
 
   // Calculamos el total al cambiar la cantidad
   const handleCantidadChange = (e) => {
@@ -40,20 +45,47 @@ function AsignarPedido() {
     setTotal(newTotal);
   };
 
-  // Trabajamos el MODAL para ingreso Cliente
-  const [modalShow, setModalShow] = useState(false);
+  // Trabajamos el MODAL para ingreso Cliente, busqueda cliente, busqueda producto
+  const [modalClienteShow, setModalClienteShow] = useState(false);
+  const [modalClienteSearchShow, setModalClienteSearchShow] = useState(false);
+  const [modalProductoShow, setModalProductoShow] = useState(false);
 
   const openModal = () => {
-    setModalShow(true);
+    setModalClienteShow(true);
   };
 
   const closeModal = () => {
-    setModalShow(false);
+    setModalClienteShow(false);
+  };
+
+  const openModalSearch = () => {
+    setModalClienteSearchShow(true);
+  };
+
+  const closeModalSearch = () => {
+    setModalClienteSearchShow(false);
+  };
+
+  const openModalProducto = () => {
+    setModalProductoShow(true);
+  };
+
+  const closeModalProducto = () => {
+    setModalProductoShow(false);
+  };
+
+  const handleModalSelect = (id) => {
+    const selected = productos.find((producto) => producto.id === id);
+    setSelectedProduct(selected);
+    setProducto(id);
+    setPrecio(selected.precio);
+    closeModalProducto();
   };
 
   const handleFormSubmit = (formData) => {
     setCliente(formData);
     closeModal();
+    closeModalSearch();
   };
 
   // Fetch para realizar el pedido
@@ -85,6 +117,30 @@ function AsignarPedido() {
     }
   };
 
+  //CARGA DE PRODUCTOS
+  useEffect(() => {
+    const getProductos = async () => {
+      const response = await fetchProductosNuevo();
+      const productosResponse =
+        response["S:Envelope"]["S:Body"]["ns2:getProductosResponse"]["return"];
+
+      const formatProducto = (producto) => ({
+        id: producto.idCombo._text,
+        descripcion: producto.descripcion._text,
+        imagen: producto.imagen._text,
+        precio: producto.precio._text,
+      });
+
+      const productosFormatted = Array.isArray(productosResponse)
+        ? productosResponse.map(formatProducto)
+        : [formatProducto(productosResponse)];
+
+      setProductos(productosFormatted);
+    };
+
+    getProductos();
+  }, []);
+
   // Descargar PDF
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
@@ -93,7 +149,6 @@ function AsignarPedido() {
     doc.setFontSize(12);
     doc.setTextColor("#000000"); // Color del texto
 
-    // Título
     doc.setFont("helvetica", "bold");
     doc.setFontSize(18);
     doc.text("ManageSys Restaurant", 10, 20);
@@ -105,8 +160,6 @@ function AsignarPedido() {
     doc.text(`Nit: ${cliente.nit}`, 10, 50);
     doc.text(`Razón Social: ${cliente.razon_social}`, 10, 60);
     doc.text(`Nickname: ${cliente.nickname}`, 10, 70);
-    doc.text(`Dirección: ${cliente.direccion}`, 10, 80);
-    doc.text(`Teléfono: ${cliente.telefono}`, 10, 90);
 
     // Información del pedido
     doc.text(`Mesa Numero: ${id}`, 10, 110);
@@ -136,7 +189,16 @@ function AsignarPedido() {
               <Button variant="danger" onClick={openModal} type="button">
                 Asignar Cliente
               </Button>
-              <Modal show={modalShow} onHide={closeModal}>
+              <Button
+                variant="danger"
+                onClick={openModalSearch}
+                type="button"
+                className="ms-3"
+              >
+                Asignar Cliente Existente
+              </Button>
+
+              <Modal show={modalClienteShow} onHide={closeModal}>
                 <Modal.Header closeButton>
                   <Modal.Title>Datos del cliente</Modal.Title>
                 </Modal.Header>
@@ -149,6 +211,27 @@ function AsignarPedido() {
                   </Button>
                 </Modal.Footer>
               </Modal>
+
+              <Modal show={modalClienteSearchShow} onHide={closeModalSearch}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Datos buscar</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <ModalClienteBusqueda onSubmit={handleFormSubmit} />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={closeModalSearch}>
+                    Cerrar
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+              <ModalProducto
+                show={modalProductoShow}
+                onHide={() => setModalProductoShow(false)}
+                data={productos}
+                onSelect={handleModalSelect}
+              />
             </div>
             <form onSubmit={handleSubmit}>
               <div className="form-floating mb-3">
@@ -200,14 +283,14 @@ function AsignarPedido() {
             <p className="text-muted text-sm mb-5">Sistema de pedidos</p>
             {/* <form onSubmit={handleSubmit}> */}
             <div className="form-floating mb-3">
-              <input
-                className="form-control"
-                type="text"
-                value={producto}
-                onChange={(e) => setProducto(e.target.value)}
-                required
-              />
-              <label>Producto</label>
+              <Button
+                variant="danger"
+                onClick={openModalProducto}
+                type="button"
+                className="ms-3"
+              >
+                Asignar Producto
+              </Button>
             </div>
 
             <div className="form-floating mb-3">
@@ -226,9 +309,10 @@ function AsignarPedido() {
                 className="form-control"
                 type="text"
                 value={precio}
-                onChange={handlePrecioChange}
+                readOnly
                 required
               />
+
               <label>Precio</label>
             </div>
 

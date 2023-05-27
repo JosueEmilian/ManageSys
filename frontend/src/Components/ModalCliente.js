@@ -87,7 +87,7 @@ const ModalCliente = ({ onSubmit }) => {
       </Form.Group>
 
       <Button variant="danger" type="submit" className="mt-4 text-center">
-        Registrarse
+        Registrar
       </Button>
     </Form>
   );

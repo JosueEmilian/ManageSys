@@ -47,6 +47,7 @@ public class WSTransaction {
         transaction.setPrecioDetalle(precioDetalle);
         transaction.setTotalLineaDetalle(totalLineaDetalle);
         transaction.setObservacionDetalle(observacionDetalle);
+        transaction.setEstadoDetalle(true);
 
         return daoTransaction.Register(transaction);
     }
